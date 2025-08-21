@@ -1,0 +1,23 @@
+package com.example.FC_BACKEND.global.exception.customexception;
+
+import com.example.FC_BACKEND.global.exception.constant.ErrorCode;
+import lombok.Getter;
+
+@Getter
+public class CustomException extends RuntimeException {
+    private final ErrorCode errorCode;
+    private final String message;
+    private final String messageDetail;
+
+    protected CustomException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.message = errorCode.getMessage();
+        this.messageDetail = null;
+    }
+
+    protected CustomException(ErrorCode errorCode, String messageDetail) {
+        this.errorCode = errorCode;
+        this.message = errorCode.getMessage();
+        this.messageDetail = messageDetail;
+    }
+}
