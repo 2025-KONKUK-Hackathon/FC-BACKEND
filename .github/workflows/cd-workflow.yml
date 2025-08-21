@@ -56,7 +56,14 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
 
             echo "🌱 Running new container"
-            sudo docker run -d -p 8000:8080 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+             sudo docker run -d \
+              -p 8080:8080 \
+              --name ${{ secrets.CONTAINER_NAME }} \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              -e PROD_DATASOURCE_URL=${{ secrets.PROD_DATASOURCE_URL }} \
+              -e PROD_DATASOURCE_USERNAME=${{ secrets.PROD_DATASOURCE_USERNAME }} \
+              -e PROD_DATASOURCE_PASSWORD=${{ secrets.PROD_DATASOURCE_PASSWORD }} \
+              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
 
 
             echo "🚮 Cleaning up old images"
