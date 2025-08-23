@@ -22,6 +22,9 @@ public class EmailVerifyCode {
     @Column(nullable = false)
     private String verifyCode;
 
+    @Builder.Default
+    private boolean isVerified = false;
+
     public static EmailVerifyCode create(String email, String verifyCode) {
         return EmailVerifyCode.builder()
                 .email(email)
