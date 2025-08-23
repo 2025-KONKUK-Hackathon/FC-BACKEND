@@ -65,6 +65,8 @@ jobs:
               -e PROD_DATASOURCE_PASSWORD=${{ secrets.PROD_DATASOURCE_PASSWORD }} \
               -e EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }} \
               -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
+              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              -e EXPIRED_AT=${{ secrets.EXPIRED_AT }} \
               ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
 
 
