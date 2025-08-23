@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     public static final String[] ALLOWED_PATHS = {
             "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-config",
-            "/users/signup", "/users/email/verification-requests", "/users/email/verifications"
+            "/users/signup", "/users/email/verification-requests", "/users/email/verifications", "/auth/login"
     };
 
     @Bean
