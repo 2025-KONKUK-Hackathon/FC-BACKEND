@@ -3,12 +3,18 @@ package com.example.FC_BACKEND.domain.comment.entity;
 import com.example.FC_BACKEND.domain.post.entity.Post;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
