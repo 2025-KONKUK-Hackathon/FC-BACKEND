@@ -13,6 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String frondEndOrigin = "https://fc-frontend-zeta.vercel.app";
 
+    private static final String backEndOrigin = "https://fc-backend.site";
+
     private static final String localAddress = "localhost";
 
     private static final String frontEndPort = "5173";
@@ -27,7 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedOrigins(frondEndOrigin,
-                        httpPrefix + localAddress + ":" + frontEndPort);
+                        httpPrefix + localAddress + ":" + frontEndPort,
+                        backEndOrigin);
     }
 }
 
