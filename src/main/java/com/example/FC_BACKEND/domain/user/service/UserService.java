@@ -1,5 +1,6 @@
 package com.example.FC_BACKEND.domain.user.service;
 
+import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.repository.UserRespository;
 import com.example.FC_BACKEND.global.email.entity.EmailVerifyCode;
 import com.example.FC_BACKEND.global.email.repository.EmailVerifyCodeRepository;
@@ -49,10 +50,12 @@ public class UserService {
         emailVerifyCodeRepository.save(EmailVerifyCode.create(toEmail, authCode));
     }
 
+    @Transactional
     public void verifyCode(String email, String code){
         EmailVerifyCode verifyCode = emailVerifyCodeRepository.findByEmail(email).orElseThrow(() -> new CustomException(VERIFY_CODE_NOT_FOUND));
         if(!Objects.equals(verifyCode.getVerifyCode(), code)) throw new CustomException(VERIFY_CODE_MISMATCH);
-
+        verifyCode.setVerified(true);
+        emailVerifyCodeRepository.save(verifyCode);
     }
 
     private String createCode() {
@@ -77,6 +80,14 @@ public class UserService {
 
         if(userRespository.existsByEmail(email)) throw new CustomException(EMAIL_DUPLICATE);
 
+    }
+
+    @Transactional
+    public void signup(String email, String name, String password, String studentNumber, String phone){
+        if(userRespository.existsByEmail(email)) throw new CustomException(EMAIL_DUPLICATE);
+        EmailVerifyCode verifyCode = emailVerifyCodeRepository.findByEmail(email).orElseThrow(() -> new CustomException(VERIFY_CODE_NOT_FOUND));
+        if(!verifyCode.isVerified()) throw new CustomException(NOT_VERIFIED_EMAIL);
+        userRespository.save(User.create(email, name, password, studentNumber, phone));
     }
 
 }
