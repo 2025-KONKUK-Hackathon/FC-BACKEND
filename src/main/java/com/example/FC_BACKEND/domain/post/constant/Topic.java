@@ -12,5 +12,6 @@ public enum Topic {
     PROJECT,
     STUDY,
     INTERNSHIP,
+    ANNOUNCEMENT,
     ETC
 }
