@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +41,14 @@ public class User {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public static User create(String email, String name, String password, String phone, String studentNumber){
+        return User.builder()
+                .email(email)
+                .name(name)
+                .password(password)
+                .phone(phone)
+                .studentNumber(studentNumber)
+                .build();
+    }
 }
