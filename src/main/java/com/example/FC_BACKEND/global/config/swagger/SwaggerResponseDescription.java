@@ -2,13 +2,27 @@ package com.example.FC_BACKEND.global.config.swagger;
 
 import com.example.FC_BACKEND.global.exception.constant.ErrorCode;
 import com.example.FC_BACKEND.global.exception.constant.GlobalErrorCode;
+import com.example.FC_BACKEND.global.exception.constant.UserErrorCode;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static com.example.FC_BACKEND.global.exception.constant.UserErrorCode.*;
+
 @Getter
 public enum SwaggerResponseDescription {
+
+    SEND_EMAIL_CODE(new LinkedHashSet<>(Set.of(
+            EMAIL_SEND_FAILED,
+            INVALID_EMAIL_TYPE,
+            INVALID_EMAIL,
+            EMAIL_DUPLICATE
+    ))),
+    VERIFY_CODE(new LinkedHashSet<>(Set.of(
+            VERIFY_CODE_MISMATCH,
+            VERIFY_CODE_NOT_FOUND
+    )))
     ;
     private final Set<ErrorCode> errorCodeList;
     SwaggerResponseDescription(Set<ErrorCode> specificErrorCodes) {
