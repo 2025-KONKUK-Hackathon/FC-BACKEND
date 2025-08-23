@@ -59,14 +59,14 @@ jobs:
              sudo docker run -d \
               -p 8080:8080 \
               --name ${{ secrets.CONTAINER_NAME }} \
-              -e SPRING_PROFILES_ACTIVE=prod \
-              -e PROD_DATASOURCE_URL=${{ secrets.PROD_DATASOURCE_URL }} \
-              -e PROD_DATASOURCE_USERNAME=${{ secrets.PROD_DATASOURCE_USERNAME }} \
-              -e PROD_DATASOURCE_PASSWORD=${{ secrets.PROD_DATASOURCE_PASSWORD }} \
-              -e EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }} \
-              -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
-              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              -e EXPIRED_AT=${{ secrets.EXPIRED_AT }} \
+              -e SPRING_PROFILES_ACTIVE='prod' \
+              -e PROD_DATASOURCE_URL='${{ secrets.PROD_DATASOURCE_URL }}' \
+              -e PROD_DATASOURCE_USERNAME='${{ secrets.PROD_DATASOURCE_USERNAME }}' \
+              -e PROD_DATASOURCE_PASSWORD='${{ secrets.PROD_DATASOURCE_PASSWORD }}' \
+              -e EMAIL_USERNAME='${{ secrets.EMAIL_USERNAME }}' \
+              -e EMAIL_PASSWORD='${{ secrets.EMAIL_PASSWORD }}' \
+              -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+              -e EXPIRED_AT='${{ secrets.EXPIRED_AT }}' \
               ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
 
 
