@@ -1,6 +1,7 @@
 package com.example.FC_BACKEND.domain.user.controller;
 
 import com.example.FC_BACKEND.domain.user.dto.request.EmailRequest;
+import com.example.FC_BACKEND.domain.user.dto.request.UserSignUpRequest;
 import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
 import com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription;
@@ -31,11 +32,19 @@ public class UserController {
     @Tag(name = "회원가입 관련 API")
     @Operation(summary = "인증번호 확인")
     @CustomExceptionDescription(VERIFY_CODE)
-    @GetMapping("emails/verifications")
+    @PostMapping("emails/verifications")
     public BaseResponse<Void> verify(@RequestParam String email, @RequestParam String code){
         userService.verifyCode(email,code);
         return BaseResponse.ok(null,"인증에 성공하였습니다.");
     }
 
+    @Tag(name = "회원가입 관련 API")
+    @Operation(summary = "회원가입")
+    @CustomExceptionDescription(SIGNUP)
+    @PostMapping("signup")
+    public BaseResponse<Void> signup(@RequestBody UserSignUpRequest req){
+        userService.signup(req.email(),req.name(),req.password(),req.studentNumber(),req.phone());
+        return BaseResponse.ok(null,"회원가입에 성공하였습니다.");
+    }
 
 }

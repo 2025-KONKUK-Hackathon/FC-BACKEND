@@ -10,7 +10,8 @@ public enum UserErrorCode implements ErrorCode {
     INVALID_EMAIL_TYPE(HttpStatus.BAD_REQUEST.value(), "이메일 형식으로 작성해주세요"),
     INVALID_EMAIL(HttpStatus.BAD_REQUEST.value(), "건국대학교 학생만 이용 가능합니다."),
     VERIFY_CODE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "인증번호가 존재하지 않습니다. 다시 요청해주세요."),
-    VERIFY_CODE_MISMATCH(HttpStatus.BAD_REQUEST.value(), "인증번호가 일치하지 않습니다.")
+    VERIFY_CODE_MISMATCH(HttpStatus.BAD_REQUEST.value(), "인증번호가 일치하지 않습니다."),
+    NOT_VERIFIED_EMAIL(HttpStatus.BAD_REQUEST.value(), "이메일 인증이 완료되지 않은 사용자입니다."),
 
     ;
     private final int httpStatus;

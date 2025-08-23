@@ -13,6 +13,9 @@ import static com.example.FC_BACKEND.global.exception.constant.UserErrorCode.*;
 @Getter
 public enum SwaggerResponseDescription {
 
+    COMMON(new LinkedHashSet<>(Set.of(
+    ))),
+
     SEND_EMAIL_CODE(new LinkedHashSet<>(Set.of(
             EMAIL_SEND_FAILED,
             INVALID_EMAIL_TYPE,
@@ -22,6 +25,10 @@ public enum SwaggerResponseDescription {
     VERIFY_CODE(new LinkedHashSet<>(Set.of(
             VERIFY_CODE_MISMATCH,
             VERIFY_CODE_NOT_FOUND
+    ))),
+    SIGNUP(new LinkedHashSet<>(Set.of(
+            NOT_VERIFIED_EMAIL,
+            EMAIL_DUPLICATE
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
