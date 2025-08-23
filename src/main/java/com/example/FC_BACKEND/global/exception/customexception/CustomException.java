@@ -9,13 +9,13 @@ public class CustomException extends RuntimeException {
     private final String message;
     private final String messageDetail;
 
-    protected CustomException(ErrorCode errorCode) {
+    public CustomException(ErrorCode errorCode) {
         this.errorCode = errorCode;
         this.message = errorCode.getMessage();
         this.messageDetail = null;
     }
 
-    protected CustomException(ErrorCode errorCode, String messageDetail) {
+    public CustomException(ErrorCode errorCode, String messageDetail) {
         this.errorCode = errorCode;
         this.message = errorCode.getMessage();
         this.messageDetail = messageDetail;
