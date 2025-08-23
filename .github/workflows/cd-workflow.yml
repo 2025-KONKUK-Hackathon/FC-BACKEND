@@ -63,6 +63,8 @@ jobs:
               -e PROD_DATASOURCE_URL=${{ secrets.PROD_DATASOURCE_URL }} \
               -e PROD_DATASOURCE_USERNAME=${{ secrets.PROD_DATASOURCE_USERNAME }} \
               -e PROD_DATASOURCE_PASSWORD=${{ secrets.PROD_DATASOURCE_PASSWORD }} \
+              -e MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} \
+              -e MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} \
               ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
 
 
