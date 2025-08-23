@@ -29,6 +29,10 @@ public enum SwaggerResponseDescription {
     SIGNUP(new LinkedHashSet<>(Set.of(
             NOT_VERIFIED_EMAIL,
             EMAIL_DUPLICATE
+    ))),
+    LOGIN(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND,
+            PASSWORD_NOT_MATCH
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
