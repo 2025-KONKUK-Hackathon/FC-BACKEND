@@ -1,15 +1,13 @@
 package com.example.FC_BACKEND.global.config.swagger;
 
-import com.example.FC_BACKEND.global.exception.constant.ErrorCode;
-import com.example.FC_BACKEND.global.exception.constant.GlobalErrorCode;
-import com.example.FC_BACKEND.global.exception.constant.ImageErrorCode;
-import com.example.FC_BACKEND.global.exception.constant.UserErrorCode;
+import com.example.FC_BACKEND.global.exception.constant.*;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.example.FC_BACKEND.global.exception.constant.ImageErrorCode.*;
+import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
 import static com.example.FC_BACKEND.global.exception.constant.UserErrorCode.*;
 
 @Getter
@@ -43,6 +41,11 @@ public enum SwaggerResponseDescription {
     ))),
     POST_CREATE(new LinkedHashSet<>(Set.of(
             USER_NOT_FOUND
+    ))),
+    POST_DELETE(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND,
+            POST_NOT_FOUND,
+            POST_UNAUTHORIZED
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

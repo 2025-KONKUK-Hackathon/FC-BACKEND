@@ -10,10 +10,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,11 +23,20 @@ public class PostController {
 
     @Tag(name = "게시글 관련 API")
     @Operation(summary = "게시글 작성")
-    @CustomExceptionDescription(SwaggerResponseDescription.POST_CREATE)
+    @CustomExceptionDescription(POST_CREATE)
     @PostMapping()
     public BaseResponse<Long> createPost(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody PostCreateRequest req){
         return BaseResponse.create(postService.createPost(userId, req.title(), req.content(), req.imageUrls(), req.part(),
                 req.grade(), req.Topic(), req.affiliation()),"게시글 작성이 완료되었습니다.");
+    }
+
+    @Tag(name = "게시글 관련 API")
+    @Operation(summary = "게시글 삭제")
+    @CustomExceptionDescription(POST_DELETE)
+    @DeleteMapping("{postId}")
+    public BaseResponse<Void> deletePost(@LoginUserId @Parameter(hidden = true) Long userId, @PathVariable Long postId){
+        postService.deletePost(userId, postId);
+        return BaseResponse.ok("게시글 삭제가 완료되었습니다.");
     }
 
 
