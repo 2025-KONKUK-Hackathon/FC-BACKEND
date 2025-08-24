@@ -1,5 +1,6 @@
 package com.example.FC_BACKEND.domain.post.entity;
 
+import com.example.FC_BACKEND.domain.post.constant.Affiliation;
 import com.example.FC_BACKEND.domain.post.constant.Grade;
 import com.example.FC_BACKEND.domain.post.constant.Part;
 import com.example.FC_BACKEND.domain.post.constant.Topic;
@@ -40,6 +41,9 @@ public class Post {
 
     @Enumerated(EnumType.STRING)
     private Topic topic;
+
+    @Enumerated(EnumType.STRING)
+    private Affiliation affiliation;
 
     @CreatedDate
     private LocalDateTime createdAt;
