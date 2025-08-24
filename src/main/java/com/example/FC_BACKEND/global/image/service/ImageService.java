@@ -69,5 +69,4 @@ public class ImageService {
         }
         return mimeType.substring(slashIndex + 1).toLowerCase(Locale.ROOT);
     }
-
 }

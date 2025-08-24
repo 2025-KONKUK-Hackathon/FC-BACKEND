@@ -40,6 +40,9 @@ public enum SwaggerResponseDescription {
             NOT_IMAGE,
             UNSUPPORTED_MEDIA_TYPE,
             UNSUPPORTED_IMAGE_TYPE
+    ))),
+    POST_CREATE(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("signup")
     public BaseResponse<Void> signup(@RequestBody UserSignUpRequest req){
         userService.signup(req.email(),req.name(),req.password(),req.studentNumber(),req.phone());
-        return BaseResponse.ok(null,"회원가입에 성공하였습니다.");
+        return BaseResponse.create(null,"회원가입에 성공하였습니다.");
     }
 
 }

@@ -90,4 +90,8 @@ public class UserService {
         userRespository.save(User.create(email, name, password, studentNumber, phone));
     }
 
+    public User findUser(Long userId){
+        return userRespository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    }
+
 }
