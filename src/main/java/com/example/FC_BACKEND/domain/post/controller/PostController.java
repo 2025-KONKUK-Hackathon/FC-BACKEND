@@ -3,10 +3,12 @@ package com.example.FC_BACKEND.domain.post.controller;
 import com.example.FC_BACKEND.domain.comment.dto.request.CommentCreateRequest;
 import com.example.FC_BACKEND.domain.comment.service.CommentService;
 import com.example.FC_BACKEND.domain.post.dto.request.PostCreateRequest;
+import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.service.PostService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
 import com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription;
+import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -58,5 +60,15 @@ public class PostController {
     public BaseResponse<Void> deleteComment(@LoginUserId @Parameter(hidden = true) Long userId, @PathVariable Long commentId){
         commentService.deleteComment(userId, commentId);
         return BaseResponse.ok("댓글 삭제가 완료되었습니다.");
+    }
+
+    @Tag(name = "게시글 관련 API")
+    @Operation(summary = "게시글 목록 조회")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping()
+    public BaseResponse<SliceResponse<PostSummaryResponse, Long>> getAllPosts(
+            @RequestParam(required = false) Long cursorId, @RequestParam(required = false, defaultValue = "10") int size
+    ){
+        return BaseResponse.ok(postService.getAllPosts(cursorId, size),"게시글 목록 조회에 성공하였습니다.");
     }
 }

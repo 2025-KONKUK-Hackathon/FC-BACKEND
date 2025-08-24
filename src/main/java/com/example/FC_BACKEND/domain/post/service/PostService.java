@@ -4,6 +4,7 @@ import com.example.FC_BACKEND.domain.post.constant.Affiliation;
 import com.example.FC_BACKEND.domain.post.constant.Grade;
 import com.example.FC_BACKEND.domain.post.constant.Part;
 import com.example.FC_BACKEND.domain.post.constant.Topic;
+import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.entity.Post;
 import com.example.FC_BACKEND.domain.post.entity.PostImage;
 import com.example.FC_BACKEND.domain.post.repository.PostCustomRepositoryImpl;
@@ -12,9 +13,11 @@ import com.example.FC_BACKEND.domain.post.repository.PostRepository;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
+import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.exception.constant.PostErrorCode;
 import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+//TODO: 게시글 상세 조회, 게시글 전체 조회
 public class PostService {
 
     private final PostRepository postRepository;
@@ -77,5 +81,12 @@ public class PostService {
 
     public Post findPostById(Long postId){
         return postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
+    }
+
+    public SliceResponse<PostSummaryResponse, Long> getAllPosts(Long cursorId, int size){
+
+        Slice<PostSummaryResponse> postList = postRepository.findAllByCursorId(cursorId, size);
+
+        return SliceResponse.from(postList);
     }
 }
