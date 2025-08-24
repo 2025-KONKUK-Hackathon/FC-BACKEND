@@ -65,7 +65,7 @@ public class PostService {
         }
 
         Post post = findPostById(postId);
-        
+
         User user =  userService.findUser(userId);
 
         if(!post.getUser().equals(user)){
@@ -75,7 +75,7 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    private Post findPostById(Long postId){
+    public Post findPostById(Long postId){
         return postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 }
