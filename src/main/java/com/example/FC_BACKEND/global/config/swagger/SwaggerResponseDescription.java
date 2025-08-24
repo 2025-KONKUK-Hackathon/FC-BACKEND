@@ -2,12 +2,14 @@ package com.example.FC_BACKEND.global.config.swagger;
 
 import com.example.FC_BACKEND.global.exception.constant.ErrorCode;
 import com.example.FC_BACKEND.global.exception.constant.GlobalErrorCode;
+import com.example.FC_BACKEND.global.exception.constant.ImageErrorCode;
 import com.example.FC_BACKEND.global.exception.constant.UserErrorCode;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static com.example.FC_BACKEND.global.exception.constant.ImageErrorCode.*;
 import static com.example.FC_BACKEND.global.exception.constant.UserErrorCode.*;
 
 @Getter
@@ -33,6 +35,11 @@ public enum SwaggerResponseDescription {
     LOGIN(new LinkedHashSet<>(Set.of(
             USER_NOT_FOUND,
             PASSWORD_NOT_MATCH
+    ))),
+    UPLOAD_IMAGE(new LinkedHashSet<>(Set.of(
+            NOT_IMAGE,
+            UNSUPPORTED_MEDIA_TYPE,
+            UNSUPPORTED_IMAGE_TYPE
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
