@@ -12,12 +12,16 @@ import com.example.FC_BACKEND.domain.post.repository.PostRepository;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
+import com.example.FC_BACKEND.global.exception.constant.PostErrorCode;
+import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +55,27 @@ public class PostService {
         }
 
         return post.getId();
+    }
+
+    @Transactional
+    public void deletePost(Long userId, Long postId){
+        List<PostImage> images = postImageRepository.findAllByPostId(postId);
+        if(!images.isEmpty()){
+            postImageRepository.deleteAll(images);
+        }
+
+        Post post = findPostById(postId);
+        
+        User user =  userService.findUser(userId);
+
+        if(!post.getUser().equals(user)){
+            throw new CustomException(POST_UNAUTHORIZED);
+        }
+
+        postRepository.deleteById(postId);
+    }
+
+    private Post findPostById(Long postId){
+        return postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 }
