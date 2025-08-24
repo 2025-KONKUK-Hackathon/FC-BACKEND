@@ -35,7 +35,6 @@ public class Meeting {
     LocalDate recruitEndDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Category category;
 
     @Enumerated(EnumType.STRING)

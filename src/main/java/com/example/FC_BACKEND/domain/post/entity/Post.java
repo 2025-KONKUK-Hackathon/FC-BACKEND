@@ -33,15 +33,12 @@ public class Post {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Part part;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Grade grade;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Topic topic;
 
     @CreatedDate
