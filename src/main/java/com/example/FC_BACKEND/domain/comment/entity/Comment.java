@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +39,13 @@ public class Comment {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public static Comment create(User user, Post post, String content){
+        return Comment.builder()
+                .user(user)
+                .content(content)
+                .post(post)
+                .build();
+    }
 
 }
