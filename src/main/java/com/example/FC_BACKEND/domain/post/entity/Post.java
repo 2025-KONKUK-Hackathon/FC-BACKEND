@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +52,17 @@ public class Post {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public static Post create(User user, String title, String content, Part part,  Grade grade, Topic topic, Affiliation affiliation){
+        return Post.builder()
+                .user(user)
+                .title(title)
+                .content(content)
+                .part(part)
+                .grade(grade)
+                .topic(topic)
+                .affiliation(affiliation)
+                .build();
+    }
 
 }
