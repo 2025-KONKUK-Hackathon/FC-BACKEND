@@ -12,6 +12,9 @@ public record PostSummaryResponse(
         @Schema(description = "작성자 ID")
         Long writerId,
 
+        @Schema(description = "작성자 이름")
+        String writerName,
+
         @Schema(description = "제목", example = "아니")
         String title,
 
@@ -30,8 +33,8 @@ public record PostSummaryResponse(
 {
 
 
-    public static PostSummaryResponse of(Long postId, Long writerId, String title, String content, int commentCount, String imageUrl, LocalDateTime createdAt) {
-        return new PostSummaryResponse(postId, writerId, title, content, commentCount, imageUrl, createdAt);
+    public static PostSummaryResponse of(Long postId, Long writerId, String writerName, String title, String content, int commentCount, String imageUrl, LocalDateTime createdAt) {
+        return new PostSummaryResponse(postId, writerId, writerName, title, content, commentCount, imageUrl, createdAt);
     }
 
     @Override

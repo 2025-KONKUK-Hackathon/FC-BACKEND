@@ -49,6 +49,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .select(Projections.constructor(PostSummaryResponse.class,
                         post.id,
                         post.user.id,
+                        post.user.name,
                         post.title,
                         post.content,
                         comment.id.count().intValue(),
