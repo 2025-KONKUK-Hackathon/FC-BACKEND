@@ -108,6 +108,8 @@ public class PostService {
 
         List<Comment> comments = commentRepository.findByPostId(postId);
 
+        List<String> imageUrls = postImageRepository.findAllUrlByPostId(postId);
+
         return PostDetailResponse.builder()
                 .writerId(user.getId())
                 .writerName(user.getName())
@@ -115,6 +117,7 @@ public class PostService {
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
                 .commentCount(comments.size())
+                .imageUrls(imageUrls)
                 .build();
 
     }
