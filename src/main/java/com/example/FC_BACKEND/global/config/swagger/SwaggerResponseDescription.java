@@ -58,6 +58,9 @@ public enum SwaggerResponseDescription {
     ))),
     POST_DETAIL(new LinkedHashSet<>(Set.of(
             POST_NOT_FOUND
+    ))),
+    MEETING_CREATE(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

@@ -1,9 +1,62 @@
 package com.example.FC_BACKEND.domain.meeting.service;
 
+import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
+import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
+import com.example.FC_BACKEND.domain.meeting.entity.MeetingMember;
+import com.example.FC_BACKEND.domain.meeting.repository.MeetingImageRepository;
+import com.example.FC_BACKEND.domain.meeting.repository.MeetingMemberRepository;
+import com.example.FC_BACKEND.domain.meeting.repository.MeetingRepository;
+import com.example.FC_BACKEND.domain.post.entity.PostImage;
+import com.example.FC_BACKEND.domain.user.entity.User;
+import com.example.FC_BACKEND.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MeetingService {
+
+    private final MeetingRepository meetingRepository;
+
+    private final UserService userService;
+
+    private final MeetingMemberRepository meetingMemberRepository;
+
+    private final MeetingImageRepository meetingImageRepository;
+
+    @Transactional
+    public Long createMeeting(Long userId, String meetingName, String content, String category, int recruitNumber,
+                              LocalDate recruitStartDate, LocalDate recruitEndDate, LocalDate actualStartDate, LocalDate actualEndDate,
+                              List<String> imageUrls) {
+
+        User user = userService.findUser(userId);
+
+        Meeting meeting = Meeting.createMeeting(meetingName, content, category, recruitNumber, recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
+        meetingRepository.save(meeting);
+
+        List<String> urls = imageUrls != null ? imageUrls : List.of();
+        if (!urls.isEmpty()) {
+
+            List<MeetingImage> images = new ArrayList<>(urls.size());
+            for (String url : urls) {
+                images.add(MeetingImage.create(meeting, url));
+            }
+            meetingImageRepository.saveAll(images);
+        }
+
+        MeetingMember meetingMember = MeetingMember.create(user, meeting, LocalDateTime.now());
+        meetingMember.setHost(true);
+        meetingMemberRepository.save(meetingMember);
+
+        return meeting.getId();
+
+    }
+
 }
