@@ -187,6 +187,7 @@ public class MeetingService {
     }
 
     public List<MeetingMemberResponse> getMeetingMembers(Long meetingId){
+
         List<MeetingMember> meetingMembers = meetingMemberRepository.findAllByMeetingId(meetingId);
 
         List<MeetingMemberResponse> meetingMemberResponse = new ArrayList<>();
@@ -197,7 +198,8 @@ public class MeetingService {
                     user.getId(),
                     user.getName(),
                     user.getPhone(),
-                    user.getStudentNumber()
+                    user.getStudentNumber(),
+                    meetingMember.getRegisteredAt()
             ));
         }
         return meetingMemberResponse;

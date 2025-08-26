@@ -2,6 +2,8 @@ package com.example.FC_BACKEND.domain.meeting.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
+
 public record MeetingMemberResponse(
         @Schema(description = "모임 멤버 ID")
         Long meetingMemberId,
@@ -13,6 +15,9 @@ public record MeetingMemberResponse(
         String phone,
 
         @Schema(description = "모임 멤버 학번")
-        String studentNunmber
+        String studentNunmber,
+
+        @Schema(description = "신청 시각")
+        LocalDateTime registerAt
 ) {
 }
