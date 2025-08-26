@@ -51,4 +51,14 @@ public class MeetingController {
         return BaseResponse.ok(meetingService.getMeetingById(meetingId),"모임 상세 조회에 성공하였습니다.");
     }
 
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모임 신청하기")
+    @CustomExceptionDescription(ADD_MEETING_MEMBER)
+    @PostMapping("{meetingId}")
+    public BaseResponse<Void> addMeetingMember(@LoginUserId @Parameter(hidden = true) Long userId,
+                                               @PathVariable Long meetingId){
+        meetingService.addMeetingMember(userId, meetingId);
+        return BaseResponse.ok("모임 신청에 성공하였습니다.");
+    }
+
 }

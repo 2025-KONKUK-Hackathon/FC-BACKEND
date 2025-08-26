@@ -67,6 +67,13 @@ public enum SwaggerResponseDescription {
     ))),
     MEETING_DETAIL(new LinkedHashSet<>(Set.of(
             MEETING_NOT_FOUND
+    ))),
+    ADD_MEETING_MEMBER(new LinkedHashSet<>(Set.of(
+            MEETING_NOT_FOUND,
+            USER_NOT_FOUND,
+            FULL_RECRUIT,
+            RECRUIT_FINISHED,
+            DUPLICATE_MEETING_MEMBER
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
