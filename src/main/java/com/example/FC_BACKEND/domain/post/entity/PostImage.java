@@ -18,6 +18,7 @@ public class PostImage {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    @Column(nullable = false)
     private String url;
 
     public static PostImage of(Post post, String url) {
