@@ -1,16 +1,20 @@
 package com.example.FC_BACKEND.domain.meeting.service;
 
 import com.example.FC_BACKEND.domain.meeting.constant.MeetingStatus;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingMember;
+import com.example.FC_BACKEND.domain.meeting.repository.MeetingCustomRepositoryImpl;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingImageRepository;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingMemberRepository;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingRepository;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.service.UserService;
+import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +38,8 @@ public class MeetingService {
 
     private final MeetingImageRepository meetingImageRepository;
 
+    private final MeetingCustomRepositoryImpl meetingCustomRepository;
+
     @Transactional
     public Long createMeeting(Long userId, String meetingName, String content, String category, int recruitNumber,
                               LocalDate recruitStartDate, LocalDate recruitEndDate, LocalDate actualStartDate, LocalDate actualEndDate,
@@ -44,9 +50,8 @@ public class MeetingService {
         validateDate(recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
 
         Meeting meeting = Meeting.createMeeting(meetingName, content, category, recruitNumber, recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
-        meetingRepository.save(meeting);
-
         setMeetingStatus(recruitStartDate, recruitEndDate, meeting);
+        meetingRepository.save(meeting);
 
         List<String> urls = imageUrls != null ? imageUrls : List.of();
         if (!urls.isEmpty()) {
@@ -102,6 +107,12 @@ public class MeetingService {
                 meeting.setMeetingStatus(MeetingStatus.FINISHED);
             }
         }
+    }
+
+    public SliceResponse<MeetingSummaryResponse, Long> getAllMeetings(Long cursorId, int size){
+        Slice<MeetingSummaryResponse> meetings = meetingCustomRepository.findAllByCursorId(cursorId, size);
+
+        return SliceResponse.from(meetings);
     }
 
 }
