@@ -9,6 +9,7 @@ import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.entity.QPost;
 import com.example.FC_BACKEND.domain.post.entity.QPostImage;
 import com.example.FC_BACKEND.domain.user.entity.QUser;
+import com.example.FC_BACKEND.domain.user.entity.User;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
@@ -88,5 +89,36 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
         if (hasNext) content.remove(size);
 
         return new SliceImpl<>(content, PageRequest.of(0, size), hasNext);
+    }
+
+    @Override
+    public User findHostById(Long meetingId) {
+        QMeeting meeting = QMeeting.meeting;
+        QMeetingMember mm = QMeetingMember.meetingMember;
+        QUser user = QUser.user;
+
+        return queryFactory
+                .select(mm.user)
+                .from(mm)
+                .join(mm.user, user)
+                .where(
+                        mm.meeting.eq(meeting),
+                        mm.isHost.isTrue()
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public int getCurrentRecruitCount(Long meetingId) {
+
+        QMeetingMember mm = QMeetingMember.meetingMember;
+
+        Integer currentRecruitCount = queryFactory
+                .select(mm.id.count().intValue())
+                .from(mm)
+                .where(mm.meeting.id.eq(meetingId))
+                .fetchOne();
+
+        return currentRecruitCount != null ? currentRecruitCount : 0;
     }
 }

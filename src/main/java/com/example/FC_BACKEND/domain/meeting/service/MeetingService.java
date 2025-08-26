@@ -1,6 +1,7 @@
 package com.example.FC_BACKEND.domain.meeting.service;
 
 import com.example.FC_BACKEND.domain.meeting.constant.MeetingStatus;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
@@ -14,6 +15,7 @@ import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import static com.example.FC_BACKEND.global.exception.constant.MeetingErrorCode.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -113,6 +116,33 @@ public class MeetingService {
         Slice<MeetingSummaryResponse> meetings = meetingCustomRepository.findAllByCursorId(cursorId, size);
 
         return SliceResponse.from(meetings);
+    }
+
+    public MeetingDetailResponse getMeetingById(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+
+        User host = meetingCustomRepository.findHostById(meetingId);
+
+        int currentRecruitCount = meetingCustomRepository.getCurrentRecruitCount(meetingId);
+
+        List<String> imageUrls = meetingImageRepository.findAllByMeetingId(meetingId);
+
+
+        return MeetingDetailResponse.builder()
+                .meetingName(meeting.getName())
+                .hostName(host.getName())
+                .hostId(host.getId())
+                .meetingStatus(String.valueOf(meeting.getMeetingStatus()))
+                .recruitNumber(meeting.getRecruitNumber())
+                .currentRecruitCount(currentRecruitCount)
+                .recruitStartDate(meeting.getRecruitStartDate())
+                .recruitEndDate(meeting.getRecruitEndDate())
+                .actualStartDate(meeting.getActualStartDate())
+                .actualEndDate(meeting.getActualEndDate())
+                .content(meeting.getContent())
+                .imageUrls(imageUrls)
+                .category(String.valueOf(meeting.getCategory()))
+                .build();
     }
 
 }
