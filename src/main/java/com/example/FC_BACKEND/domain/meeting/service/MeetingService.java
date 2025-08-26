@@ -1,5 +1,6 @@
 package com.example.FC_BACKEND.domain.meeting.service;
 
+import com.example.FC_BACKEND.domain.meeting.constant.MeetingStatus;
 import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingMember;
@@ -41,6 +42,8 @@ public class MeetingService {
         Meeting meeting = Meeting.createMeeting(meetingName, content, category, recruitNumber, recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
         meetingRepository.save(meeting);
 
+        setMeetingStatus(recruitStartDate, recruitEndDate, meeting);
+
         List<String> urls = imageUrls != null ? imageUrls : List.of();
         if (!urls.isEmpty()) {
 
@@ -57,6 +60,34 @@ public class MeetingService {
 
         return meeting.getId();
 
+    }
+
+    private void setMeetingStatus(LocalDate recruitStartDate, LocalDate recruitEndDate, Meeting meeting) {
+        LocalDate now = LocalDate.now();
+
+        if(now.isAfter(recruitStartDate) && now.isBefore(recruitEndDate) ){
+            meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
+        }
+
+        if(now.isBefore(recruitStartDate)){
+            meeting.setMeetingStatus(MeetingStatus.NOT_STARTED);
+        }
+    }
+
+    @Transactional
+    public void updateMeetingStatuses() {
+        LocalDate today = LocalDate.now();
+        List<Meeting> meetings = meetingRepository.findAll();
+
+        for (Meeting meeting : meetings) {
+            if (today.isBefore(meeting.getRecruitStartDate())) {
+                meeting.setMeetingStatus(MeetingStatus.NOT_STARTED);
+            } else if (!today.isAfter(meeting.getActualEndDate())) {
+                meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
+            } else {
+                meeting.setMeetingStatus(MeetingStatus.FINISHED);
+            }
+        }
     }
 
 }

@@ -46,8 +46,7 @@ public class Meeting {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
-    private MeetingStatus meetingStatus = MeetingStatus.NOT_STARTED;
+    private MeetingStatus meetingStatus;
 
     public static Meeting createMeeting(String meetingName, String content, String category, int recruitNumber,
                                         LocalDate recruitStartDate, LocalDate recruitEndDate, LocalDate actualStartDate, LocalDate actualEndDate) {
