@@ -2,7 +2,6 @@ package com.example.FC_BACKEND.domain.meeting.dto.response;
 
 import com.example.FC_BACKEND.global.dto.CursorProvider;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
 public record MeetingSummaryResponse(
         @Schema(description = "모임 ID")
@@ -18,7 +17,7 @@ public record MeetingSummaryResponse(
         int recruitNumber,
 
         @Schema(description = "신청 인원", example = "1")
-        int currentRecruitNumber,
+        int currentRecruitCount,
 
         @Schema(description = "모임 카테고리", example = "FREINDSHIP")
         String category,
@@ -29,10 +28,5 @@ public record MeetingSummaryResponse(
     @Override
     public Long getCursor() {
         return meetingId;
-    }
-
-    public static MeetingSummaryResponse of(Long meetingId, String hostName, String meetingName, int recruitNumber,
-                                            int currentRecruitNumber, String category, String imageUrl) {
-        return new MeetingSummaryResponse(meetingId, hostName,  meetingName, recruitNumber, currentRecruitNumber, category, imageUrl);
     }
 }
