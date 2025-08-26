@@ -2,6 +2,7 @@ package com.example.FC_BACKEND.domain.meeting.service;
 
 import com.example.FC_BACKEND.domain.meeting.constant.MeetingStatus;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingMemberResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
@@ -164,12 +165,41 @@ public class MeetingService {
             throw new CustomException(FULL_RECRUIT);
         }
 
-        if(LocalDate.now().isAfter(meeting.getRecruitEndDate())){
+        if(LocalDate.now().isAfter(meeting.getRecruitEndDate()) || meeting.getMeetingStatus().equals(MeetingStatus.FINISHED)){
             throw new CustomException(RECRUIT_FINISHED);
         }
 
         meetingMemberRepository.save(MeetingMember.create(user, meeting, LocalDateTime.now()));
 
+    }
+
+
+    @Transactional
+    public void endRecruit(Long userId, Long meetingId){
+        User user = userService.findUser(userId);
+
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+
+        meeting.setMeetingStatus(MeetingStatus.FINISHED);
+        meetingRepository.save(meeting);
+
+    }
+
+    public List<MeetingMemberResponse> getMeetingMembers(Long meetingId){
+        List<MeetingMember> meetingMembers = meetingMemberRepository.findAllByMeetingId(meetingId);
+
+        List<MeetingMemberResponse> meetingMemberResponse = new ArrayList<>();
+
+        for (MeetingMember meetingMember : meetingMembers) {
+            User user = meetingMember.getUser();
+            meetingMemberResponse.add(new MeetingMemberResponse(
+                    user.getId(),
+                    user.getName(),
+                    user.getPhone(),
+                    user.getStudentNumber()
+            ));
+        }
+        return meetingMemberResponse;
     }
 
 }
