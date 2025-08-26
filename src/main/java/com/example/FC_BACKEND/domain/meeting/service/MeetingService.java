@@ -3,6 +3,7 @@ package com.example.FC_BACKEND.domain.meeting.service;
 import com.example.FC_BACKEND.domain.meeting.constant.MeetingStatus;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingMemberResponse;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingRecruitStatusResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.entity.Meeting;
 import com.example.FC_BACKEND.domain.meeting.entity.MeetingImage;
@@ -120,7 +121,7 @@ public class MeetingService {
     }
 
     public MeetingDetailResponse getMeetingById(Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+        Meeting meeting = findMeetingById(meetingId);
 
         User host = meetingCustomRepository.findHostById(meetingId);
 
@@ -150,7 +151,7 @@ public class MeetingService {
     public void addMeetingMember(Long userId, Long meetingId){
         User user = userService.findUser(userId);
 
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+        Meeting meeting = findMeetingById(meetingId);
 
         List<MeetingMember> meetingMembers = meetingMemberRepository.findAllByMeetingId(meetingId);
 
@@ -178,7 +179,7 @@ public class MeetingService {
     public void endRecruit(Long userId, Long meetingId){
         User user = userService.findUser(userId);
 
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+        Meeting meeting = findMeetingById(meetingId);
 
         meeting.setMeetingStatus(MeetingStatus.FINISHED);
         meetingRepository.save(meeting);
@@ -200,6 +201,31 @@ public class MeetingService {
             ));
         }
         return meetingMemberResponse;
+    }
+
+    public List<MeetingRecruitStatusResponse> getRecruitStatus(Long meetingId){
+        Meeting meeting = findMeetingById(meetingId);
+
+        if(meeting.getMeetingStatus().equals(MeetingStatus.FINISHED)){
+            throw new CustomException(RECRUIT_FINISHED);
+        }
+
+        List<MeetingMember> meetingMembers = meetingMemberRepository.findAllByMeetingId(meetingId);
+
+        List<MeetingRecruitStatusResponse> meetingRecruitStatusResponses = new ArrayList<>();
+
+        for (MeetingMember meetingMember : meetingMembers) {
+            User user = meetingMember.getUser();
+            meetingRecruitStatusResponses.add(new MeetingRecruitStatusResponse(
+                    user.getId(),
+                    user.getName()
+            ));
+        }
+        return meetingRecruitStatusResponses;
+    }
+
+    public Meeting findMeetingById(Long meetingId) {
+        return meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
     }
 
 }
