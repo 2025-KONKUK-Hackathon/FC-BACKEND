@@ -34,6 +34,13 @@ public class Meeting {
     @Column(nullable = false)
     LocalDate recruitEndDate;
 
+    @Column(nullable = false)
+    LocalDate actualStartDate;
+
+    @Column(nullable = false)
+    LocalDate actualEndDate;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -41,5 +48,19 @@ public class Meeting {
     @Column(nullable = false)
     @Builder.Default
     private MeetingStatus meetingStatus = MeetingStatus.NOT_STARTED;
+
+    public static Meeting createMeeting(String meetingName, String content, String category, int recruitNumber,
+                                        LocalDate recruitStartDate, LocalDate recruitEndDate, LocalDate actualStartDate, LocalDate actualEndDate) {
+        return Meeting.builder()
+                .name(meetingName)
+                .content(content)
+                .category(Category.valueOf(category))
+                .recruitNumber(recruitNumber)
+                .recruitStartDate(recruitStartDate)
+                .recruitEndDate(recruitEndDate)
+                .actualStartDate(actualStartDate)
+                .actualEndDate(actualEndDate)
+                .build();
+    }
 
 }
