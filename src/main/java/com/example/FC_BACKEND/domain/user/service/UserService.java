@@ -87,7 +87,7 @@ public class UserService {
         if(userRespository.existsByEmail(email)) throw new CustomException(EMAIL_DUPLICATE);
         EmailVerifyCode verifyCode = emailVerifyCodeRepository.findByEmail(email).orElseThrow(() -> new CustomException(VERIFY_CODE_NOT_FOUND));
         if(!verifyCode.isVerified()) throw new CustomException(NOT_VERIFIED_EMAIL);
-        userRespository.save(User.create(email, name, password, studentNumber, phone));
+        userRespository.save(User.create(email, name, password, phone, studentNumber));
     }
 
     public User findUser(Long userId){
