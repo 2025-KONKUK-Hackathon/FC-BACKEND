@@ -1,19 +1,18 @@
 package com.example.FC_BACKEND.domain.meeting.controller;
 
 import com.example.FC_BACKEND.domain.meeting.dto.request.MeetingCreateRequest;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.service.MeetingService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
 import com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription;
+import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription.*;
 
@@ -33,4 +32,14 @@ public class MeetingController {
                 req.recruitNumber(), req.recruitStartDate(), req.recruitEndDate(), req.actualStartDate(), req.actualEndDate(), req.imageUrls()),
                 "모임 생성에 성공하였습니다.");
     }
+
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모임 목록 조회")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping()
+    public BaseResponse<SliceResponse<MeetingSummaryResponse, Long>> getAllMeetings(
+            @RequestParam(required = false) Long cursorId, @RequestParam(required = false, defaultValue = "10") int size){
+        return BaseResponse.ok(meetingService.getAllMeetings(cursorId, size),"모임 목록 조회에 성공하였습니다.");
+    }
+
 }
