@@ -101,7 +101,7 @@ public class MeetingService {
         for (Meeting meeting : meetings) {
             if (today.isBefore(meeting.getRecruitStartDate())) {
                 meeting.setMeetingStatus(MeetingStatus.NOT_STARTED);
-            } else if (!today.isAfter(meeting.getActualEndDate())) {
+            } else if (!today.isAfter(meeting.getRecruitEndDate())) {
                 meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
             } else {
                 meeting.setMeetingStatus(MeetingStatus.FINISHED);
