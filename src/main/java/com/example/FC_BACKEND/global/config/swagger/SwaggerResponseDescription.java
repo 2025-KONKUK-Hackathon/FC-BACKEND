@@ -55,6 +55,9 @@ public enum SwaggerResponseDescription {
             USER_NOT_FOUND,
             COMMENT_NOT_FOUND,
             COMMENT_UNAUTHORIZED
+    ))),
+    POST_DETAIL(new LinkedHashSet<>(Set.of(
+            POST_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

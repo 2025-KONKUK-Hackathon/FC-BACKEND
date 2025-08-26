@@ -1,8 +1,10 @@
 package com.example.FC_BACKEND.domain.post.controller;
 
 import com.example.FC_BACKEND.domain.comment.dto.request.CommentCreateRequest;
+import com.example.FC_BACKEND.domain.comment.dto.response.CommentResponse;
 import com.example.FC_BACKEND.domain.comment.service.CommentService;
 import com.example.FC_BACKEND.domain.post.dto.request.PostCreateRequest;
+import com.example.FC_BACKEND.domain.post.dto.response.PostDetailResponse;
 import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.service.PostService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
@@ -71,4 +73,25 @@ public class PostController {
     ){
         return BaseResponse.ok(postService.getAllPosts(cursorId, size),"게시글 목록 조회에 성공하였습니다.");
     }
+
+    @Tag(name = "게시글 관련 API")
+    @Operation(summary = "게시글 상세 조회")
+    @CustomExceptionDescription(POST_DETAIL)
+    @GetMapping("{postId}")
+    public BaseResponse<PostDetailResponse> getPostDetail(@PathVariable Long postId){
+        return BaseResponse.ok(postService.getPostsById(postId),"게시물 상세조회에 성공하였습니다.");
+    }
+
+    @Tag(name = "게시글 관련 API")
+    @Operation(summary = "게시글의 댓글 조회", description = "게시글 상세 조회에서 댓글 목록을 조회합니다.")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping("{postId}/comments")
+    public BaseResponse<SliceResponse<CommentResponse, Long>> getComments(
+            @PathVariable(name = "postId") Long postId,
+            @RequestParam(required = false, name = "cursor") Long cursorId,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return BaseResponse.ok(postService.getCommentsByCursorId(postId, cursorId, size),"댓글 조회에 성공하였습니다.");
+    }
+
 }

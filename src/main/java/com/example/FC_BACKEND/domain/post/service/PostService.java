@@ -1,9 +1,15 @@
 package com.example.FC_BACKEND.domain.post.service;
 
+import com.example.FC_BACKEND.domain.comment.dto.response.CommentResponse;
+import com.example.FC_BACKEND.domain.comment.entity.Comment;
+import com.example.FC_BACKEND.domain.comment.repository.CommentCustomRepository;
+import com.example.FC_BACKEND.domain.comment.repository.CommentCustomRepositoryImpl;
+import com.example.FC_BACKEND.domain.comment.repository.CommentRepository;
 import com.example.FC_BACKEND.domain.post.constant.Affiliation;
 import com.example.FC_BACKEND.domain.post.constant.Grade;
 import com.example.FC_BACKEND.domain.post.constant.Part;
 import com.example.FC_BACKEND.domain.post.constant.Topic;
+import com.example.FC_BACKEND.domain.post.dto.response.PostDetailResponse;
 import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.entity.Post;
 import com.example.FC_BACKEND.domain.post.entity.PostImage;
@@ -37,7 +43,12 @@ public class PostService {
     private final PostCustomRepositoryImpl postCustomRepositoryImpl;
 
     private final UserService userService;
+
     private final PostImageRepository postImageRepository;
+
+    private final CommentRepository commentRepository;
+
+    private final CommentCustomRepositoryImpl commentCustomRepositoryImpl;
 
     @Transactional
     public Long createPost(Long userId, String title, String content, List<String> imageUrls,
@@ -88,5 +99,31 @@ public class PostService {
         Slice<PostSummaryResponse> postList = postRepository.findAllByCursorId(cursorId, size);
 
         return SliceResponse.from(postList);
+    }
+
+    public PostDetailResponse getPostsById(Long postId){
+        Post post = findPostById(postId);
+
+        User user = post.getUser();
+
+        List<Comment> comments = commentRepository.findByPostId(postId);
+
+        return PostDetailResponse.builder()
+                .writerId(user.getId())
+                .writerName(user.getName())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .commentCount(comments.size())
+                .build();
+
+    }
+
+    public SliceResponse<CommentResponse, Long> getCommentsByCursorId(Long postId, Long cursorId, int size){
+
+        Slice<CommentResponse> commentList = commentCustomRepositoryImpl.findByPostId(postId, cursorId, size);
+
+        return SliceResponse.from(commentList);
+
     }
 }
