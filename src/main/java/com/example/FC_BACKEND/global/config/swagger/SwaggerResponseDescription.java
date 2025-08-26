@@ -74,6 +74,10 @@ public enum SwaggerResponseDescription {
             FULL_RECRUIT,
             RECRUIT_FINISHED,
             DUPLICATE_MEETING_MEMBER
+    ))),
+    END_RECRUIT(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND,
+            MEETING_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

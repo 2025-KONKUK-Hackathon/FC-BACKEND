@@ -2,6 +2,7 @@ package com.example.FC_BACKEND.domain.meeting.controller;
 
 import com.example.FC_BACKEND.domain.meeting.dto.request.MeetingCreateRequest;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingMemberResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.service.MeetingService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
@@ -14,6 +15,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription.*;
 
@@ -59,6 +62,24 @@ public class MeetingController {
                                                @PathVariable Long meetingId){
         meetingService.addMeetingMember(userId, meetingId);
         return BaseResponse.ok("모임 신청에 성공하였습니다.");
+    }
+
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모집 종료하기")
+    @CustomExceptionDescription(END_RECRUIT)
+    @PatchMapping("{meetingId}")
+    public BaseResponse<Void> endRecruit(@LoginUserId @Parameter(hidden = true) Long userId,
+                                         @PathVariable Long meetingId){
+        meetingService.endRecruit(userId, meetingId);
+        return BaseResponse.ok("모집 종료에 성공하였습니다.");
+    }
+
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모임 신청자 조회", description = "모집 종료 후 모임장에게 반환되는 신청자 목록입니다.")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping("{meetingId}/members")
+    public BaseResponse<List<MeetingMemberResponse>> getAllMeetingMembers(@PathVariable Long meetingId){
+        return BaseResponse.ok(meetingService.getMeetingMembers(meetingId),"모임 신청자 조회에 성공하였습니다.");
     }
 
 }
