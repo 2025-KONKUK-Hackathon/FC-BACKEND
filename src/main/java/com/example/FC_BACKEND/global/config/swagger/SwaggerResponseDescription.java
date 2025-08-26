@@ -64,6 +64,9 @@ public enum SwaggerResponseDescription {
             USER_NOT_FOUND,
             INVALID_DATE,
             INVALID_ACTUAL_DATE
+    ))),
+    MEETING_DETAIL(new LinkedHashSet<>(Set.of(
+            MEETING_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;

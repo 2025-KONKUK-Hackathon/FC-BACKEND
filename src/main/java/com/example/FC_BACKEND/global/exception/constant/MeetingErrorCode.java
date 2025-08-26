@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum MeetingErrorCode implements ErrorCode {
     INVALID_ACTUAL_DATE(HttpStatus.BAD_REQUEST.value(), "활동 기간이 이미 지났습니다."),
-    INVALID_DATE(HttpStatus.BAD_REQUEST.value(), "시작 기간이 종료 기간보다 과거여야 합니다.")
+    INVALID_DATE(HttpStatus.BAD_REQUEST.value(), "시작 기간이 종료 기간보다 과거여야 합니다."),
+    MEETING_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 모임입니다."),
     ;
 
 

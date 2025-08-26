@@ -1,6 +1,7 @@
 package com.example.FC_BACKEND.domain.meeting.controller;
 
 import com.example.FC_BACKEND.domain.meeting.dto.request.MeetingCreateRequest;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.service.MeetingService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
@@ -40,6 +41,14 @@ public class MeetingController {
     public BaseResponse<SliceResponse<MeetingSummaryResponse, Long>> getAllMeetings(
             @RequestParam(required = false) Long cursorId, @RequestParam(required = false, defaultValue = "10") int size){
         return BaseResponse.ok(meetingService.getAllMeetings(cursorId, size),"모임 목록 조회에 성공하였습니다.");
+    }
+
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모임 상세 조회")
+    @CustomExceptionDescription(MEETING_DETAIL)
+    @GetMapping("{meetingId}")
+    public BaseResponse<MeetingDetailResponse> getMeetingById(@PathVariable Long meetingId){
+        return BaseResponse.ok(meetingService.getMeetingById(meetingId),"모임 상세 조회에 성공하였습니다.");
     }
 
 }
