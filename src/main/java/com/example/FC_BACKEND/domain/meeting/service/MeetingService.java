@@ -145,4 +145,31 @@ public class MeetingService {
                 .build();
     }
 
+    @Transactional
+    public void addMeetingMember(Long userId, Long meetingId){
+        User user = userService.findUser(userId);
+
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
+
+        List<MeetingMember> meetingMembers = meetingMemberRepository.findAllByMeetingId(meetingId);
+
+        for (MeetingMember meetingMember : meetingMembers) {
+            if(meetingMember.getUser().getId().equals(userId)){
+                throw new CustomException(DUPLICATE_MEETING_MEMBER);
+            }
+        }
+
+        int currentRecruitCount = meetingCustomRepository.getCurrentRecruitCount(meetingId);
+        if(currentRecruitCount >= meeting.getRecruitNumber()){
+            throw new CustomException(FULL_RECRUIT);
+        }
+
+        if(LocalDate.now().isAfter(meeting.getRecruitEndDate())){
+            throw new CustomException(RECRUIT_FINISHED);
+        }
+
+        meetingMemberRepository.save(MeetingMember.create(user, meeting, LocalDateTime.now()));
+
+    }
+
 }
