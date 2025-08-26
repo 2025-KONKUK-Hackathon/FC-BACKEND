@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingMember {
     @Id
@@ -19,6 +20,9 @@ public class MeetingMember {
 
     private LocalDateTime registeredAt;
 
+    @Builder.Default
+    private boolean isHost = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,4 +30,12 @@ public class MeetingMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
+
+    public static MeetingMember create(User user, Meeting meeting, LocalDateTime registeredAt) {
+        return MeetingMember.builder()
+                .user(user)
+                .meeting(meeting)
+                .registeredAt(registeredAt)
+                .build();
+    }
 }
