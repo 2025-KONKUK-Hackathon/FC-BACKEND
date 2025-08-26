@@ -3,6 +3,7 @@ package com.example.FC_BACKEND.domain.meeting.controller;
 import com.example.FC_BACKEND.domain.meeting.dto.request.MeetingCreateRequest;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingDetailResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingMemberResponse;
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingRecruitStatusResponse;
 import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
 import com.example.FC_BACKEND.domain.meeting.service.MeetingService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
@@ -82,4 +83,11 @@ public class MeetingController {
         return BaseResponse.ok(meetingService.getMeetingMembers(meetingId),"모임 신청자 조회에 성공하였습니다.");
     }
 
+    @Tag(name = "모임 관련 API")
+    @Operation(summary = "모집 현황 조회")
+    @CustomExceptionDescription(RECRUIT_STATUS)
+    @GetMapping("{meetingId}/recruit")
+    public BaseResponse<List<MeetingRecruitStatusResponse>> getRecruitStatus(@PathVariable Long meetingId){
+        return BaseResponse.ok(meetingService.getRecruitStatus(meetingId),"모집 현황 조회에 성공하였습니다.");
+    }
 }
