@@ -7,9 +7,9 @@ import com.example.FC_BACKEND.domain.meeting.entity.MeetingMember;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingImageRepository;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingMemberRepository;
 import com.example.FC_BACKEND.domain.meeting.repository.MeetingRepository;
-import com.example.FC_BACKEND.domain.post.entity.PostImage;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.service.UserService;
+import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.FC_BACKEND.global.exception.constant.MeetingErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +40,8 @@ public class MeetingService {
                               List<String> imageUrls) {
 
         User user = userService.findUser(userId);
+
+        validateDate(recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
 
         Meeting meeting = Meeting.createMeeting(meetingName, content, category, recruitNumber, recruitStartDate, recruitEndDate, actualStartDate, actualEndDate);
         meetingRepository.save(meeting);
@@ -60,6 +64,16 @@ public class MeetingService {
 
         return meeting.getId();
 
+    }
+
+    private void validateDate(LocalDate recruitStartDate, LocalDate recruitEndDate, LocalDate actualStartDate, LocalDate actualEndDate) {
+        if(LocalDate.now().isAfter(actualEndDate)){
+            throw new CustomException(INVALID_ACTUAL_DATE);
+        }
+
+        if(actualEndDate.isBefore(actualStartDate) || recruitEndDate.isBefore(recruitStartDate)){
+            throw new CustomException(INVALID_DATE);
+        }
     }
 
     private void setMeetingStatus(LocalDate recruitStartDate, LocalDate recruitEndDate, Meeting meeting) {

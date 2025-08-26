@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.example.FC_BACKEND.global.exception.constant.ImageErrorCode.*;
+import static com.example.FC_BACKEND.global.exception.constant.MeetingErrorCode.*;
 import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
 import static com.example.FC_BACKEND.global.exception.constant.UserErrorCode.*;
 
@@ -60,7 +61,9 @@ public enum SwaggerResponseDescription {
             POST_NOT_FOUND
     ))),
     MEETING_CREATE(new LinkedHashSet<>(Set.of(
-            USER_NOT_FOUND
+            USER_NOT_FOUND,
+            INVALID_DATE,
+            INVALID_ACTUAL_DATE
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
