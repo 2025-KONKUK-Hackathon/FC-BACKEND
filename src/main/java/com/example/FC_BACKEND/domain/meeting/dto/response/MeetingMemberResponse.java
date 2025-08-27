@@ -18,6 +18,9 @@ public record MeetingMemberResponse(
         String studentNumber,
 
         @Schema(description = "신청 시각")
-        LocalDateTime registerAt
+        LocalDateTime registerAt,
+
+        @Schema(description = "모임장 여부")
+        boolean isHost
 ) {
 }

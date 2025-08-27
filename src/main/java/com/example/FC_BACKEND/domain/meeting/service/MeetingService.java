@@ -199,7 +199,8 @@ public class MeetingService {
                     user.getName(),
                     user.getPhone(),
                     user.getStudentNumber(),
-                    meetingMember.getRegisteredAt()
+                    meetingMember.getRegisteredAt(),
+                    meetingMember.isHost()
             ));
         }
         return meetingMemberResponse;
