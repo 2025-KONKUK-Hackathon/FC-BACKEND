@@ -1,5 +1,6 @@
 package com.example.FC_BACKEND.domain.user.service;
 
+import com.example.FC_BACKEND.domain.user.dto.response.UserProfileResponse;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.repository.UserRespository;
 import com.example.FC_BACKEND.global.email.entity.EmailVerifyCode;
@@ -92,6 +93,14 @@ public class UserService {
 
     public User findUser(Long userId){
         return userRespository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    }
+
+    //TODO: 유저 정보 조회
+
+    public UserProfileResponse getUserProfile(Long userId){
+        User user = findUser(userId);
+
+        return UserProfileResponse.of(user.getName(), user.getPhone());
     }
 
 }
