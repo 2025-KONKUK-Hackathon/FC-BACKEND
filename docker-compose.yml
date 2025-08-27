@@ -9,7 +9,7 @@ services:
       - /etc/fc-backend/.env
 
   green:
-    image: ksg1227/fc-backend:latest
+    image: dlwjddus1112/fc-backend:latest
     container_name: green
     restart: always
     ports:
