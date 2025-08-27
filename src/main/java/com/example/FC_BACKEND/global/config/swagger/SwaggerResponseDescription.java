@@ -82,6 +82,9 @@ public enum SwaggerResponseDescription {
     RECRUIT_STATUS(new LinkedHashSet<>(Set.of(
             MEETING_NOT_FOUND,
             RECRUIT_FINISHED
+    ))),
+    USER_PROFILE(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
