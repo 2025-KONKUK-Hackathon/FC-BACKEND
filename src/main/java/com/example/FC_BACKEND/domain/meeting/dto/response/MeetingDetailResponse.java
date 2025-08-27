@@ -14,8 +14,8 @@ public record MeetingDetailResponse(
         @Schema(description = "모임장 이름", example = "이정연")
         String hostName,
 
-        @Schema(description = "모임장 ID")
-        Long hostId,
+        @Schema(description = "모임장 여부")
+        boolean isHost,
 
         @Schema(description = "모집 상태", example = "IN_PROGRESS")
         String meetingStatus,

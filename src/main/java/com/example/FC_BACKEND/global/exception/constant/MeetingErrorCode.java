@@ -11,6 +11,7 @@ public enum MeetingErrorCode implements ErrorCode {
     FULL_RECRUIT(HttpStatus.BAD_REQUEST.value(), "모집 인원이 꽉찼습니다."),
     RECRUIT_FINISHED(HttpStatus.BAD_REQUEST.value(), "모집 기간이 종료되었습니다."),
     DUPLICATE_MEETING_MEMBER(HttpStatus.BAD_REQUEST.value(), "이미 신청한 모임입니다."),
+    MEETING_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "해당 모임에 참여하지 않은 사용자입니다.")
     ;
 
 

@@ -120,7 +120,7 @@ public class MeetingService {
         return SliceResponse.from(meetings);
     }
 
-    public MeetingDetailResponse getMeetingById(Long meetingId) {
+    public MeetingDetailResponse getMeetingById(Long userId, Long meetingId) {
         Meeting meeting = findMeetingById(meetingId);
 
         User host = meetingCustomRepository.findHostById(meetingId);
@@ -129,11 +129,15 @@ public class MeetingService {
 
         List<String> imageUrls = meetingImageRepository.findAllByMeetingId(meetingId);
 
+        MeetingMember meetingMember = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
+                .orElseThrow(() -> new CustomException(MEETING_MEMBER_NOT_FOUND));
+
+
 
         return MeetingDetailResponse.builder()
                 .meetingName(meeting.getName())
                 .hostName(host.getName())
-                .hostId(host.getId())
+                .isHost(meetingMember.isHost())
                 .meetingStatus(String.valueOf(meeting.getMeetingStatus()))
                 .recruitNumber(meeting.getRecruitNumber())
                 .currentRecruitCount(currentRecruitCount)

@@ -51,8 +51,10 @@ public class MeetingController {
     @Operation(summary = "모임 상세 조회")
     @CustomExceptionDescription(MEETING_DETAIL)
     @GetMapping("{meetingId}")
-    public BaseResponse<MeetingDetailResponse> getMeetingById(@PathVariable Long meetingId){
-        return BaseResponse.ok(meetingService.getMeetingById(meetingId),"모임 상세 조회에 성공하였습니다.");
+    public BaseResponse<MeetingDetailResponse> getMeetingById(
+            @LoginUserId @Parameter(hidden = true) Long userId,
+            @PathVariable Long meetingId){
+        return BaseResponse.ok(meetingService.getMeetingById(userId, meetingId),"모임 상세 조회에 성공하였습니다.");
     }
 
     @Tag(name = "모임 관련 API")
