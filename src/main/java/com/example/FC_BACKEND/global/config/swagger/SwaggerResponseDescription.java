@@ -85,6 +85,11 @@ public enum SwaggerResponseDescription {
     ))),
     USER_PROFILE(new LinkedHashSet<>(Set.of(
             USER_NOT_FOUND
+    ))),
+    POST_SCRAP(new LinkedHashSet<>(Set.of(
+            USER_NOT_FOUND,
+            POST_NOT_FOUND,
+            POST_ALREADY_SCRAP
     )))
     ;
     private final Set<ErrorCode> errorCodeList;
