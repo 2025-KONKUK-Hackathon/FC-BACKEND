@@ -93,4 +93,18 @@ public class PostController {
         return BaseResponse.ok(postService.getCommentsByCursorId(postId, cursorId, size),"댓글 조회에 성공하였습니다.");
     }
 
+    @Tag(name = "게시글 관련 API")
+    @Operation(summary = "게시글 스크랩")
+    @CustomExceptionDescription(POST_SCRAP)
+    @PostMapping("scrap")
+    public BaseResponse<Void> scrapPost(
+            @LoginUserId @Parameter(hidden = true) Long userId,
+            @RequestParam Long postId
+    ){
+        postService.scrapPost(userId, postId);
+        return BaseResponse.ok("게시물 스크랩에 성공하였습니다.");
+    }
+
+    
+
 }
