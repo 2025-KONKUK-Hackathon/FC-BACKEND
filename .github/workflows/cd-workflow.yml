@@ -49,19 +49,23 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           script: |
             ENV_FILE='/etc/fc-backend/.env'
-            echo "✋🏻Stopping existing container"
-            sudo docker stop ${{ secrets.CONTAINER_NAME }} || true
-            sudo docker rm ${{ secrets.CONTAINER_NAME }} || true
+            IMAGE='${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}'
+            NAME='${{ secrets.CONTAINER_NAME }}'
 
-            echo "🥳 Pulling new image"
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+            echo "✋ Stopping & removing existing container: $NAME"
+            sudo docker stop "$NAME" || true
+            sudo docker rm "$NAME" || true
 
+            echo "🥳 Pulling image: $IMAGE"
+            sudo docker pull "$IMAGE"
 
-            echo "🌱 Running new container"
+            echo "🌱 Running new container: $NAME"
             sudo docker run -d \
-             -p 8080:8080 \
-             --name ${{ secrets.CONTAINER_NAME }} \
-             --env-file "$ENV_FILE" \
-            echo "🚮 Cleaning up old images"
+              --name "$NAME" \
+              --env-file "$ENV_FILE" \
+              -p 8080:8080 \
+              "$IMAGE"
+
+            echo "🧹 Prune old images"
             sudo docker image prune -f
             
