@@ -13,9 +13,11 @@ import com.example.FC_BACKEND.domain.post.dto.response.PostDetailResponse;
 import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.entity.Post;
 import com.example.FC_BACKEND.domain.post.entity.PostImage;
+import com.example.FC_BACKEND.domain.post.entity.PostScrap;
 import com.example.FC_BACKEND.domain.post.repository.PostCustomRepositoryImpl;
 import com.example.FC_BACKEND.domain.post.repository.PostImageRepository;
 import com.example.FC_BACKEND.domain.post.repository.PostRepository;
+import com.example.FC_BACKEND.domain.post.repository.PostScrapRepository;
 import com.example.FC_BACKEND.domain.user.entity.User;
 import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
 
@@ -41,6 +44,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final PostCustomRepositoryImpl postCustomRepositoryImpl;
+
+    private final PostScrapRepository postScrapRepository;
 
     private final UserService userService;
 
@@ -135,6 +140,21 @@ public class PostService {
     }
 
     //TODO: 게시물 스크랩 기능, 스크랩한 게시물 조회 기능
+
+    @Transactional
+    public void scrapPost(Long userId, Long postId){
+        Post post = findPostById(postId);
+
+        User user = userService.findUser(userId);
+
+        Optional<PostScrap> postscrap = postScrapRepository.findByUserIdAndPostId(userId, postId);
+        if(postscrap.isPresent()){
+            throw new CustomException(POST_ALREADY_SCRAP);
+        }
+
+        postScrapRepository.save(PostScrap.create(user, post));
+
+    }
 
 
 
