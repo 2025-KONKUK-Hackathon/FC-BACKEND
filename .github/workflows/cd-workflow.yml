@@ -57,9 +57,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            echo "✋🏻Stopping existing container"
-            sudo docker stop ${{ secrets.CONTAINER_NAME }} || true
-            sudo docker rm ${{ secrets.CONTAINER_NAME }} || true
+            echo "✋🏻Stopping existing container and Deploy new container"
+            chmod +x ./deploy.sh
+            ./deploy.sh
             ENV_FILE='/etc/fc-backend/.env'
 
             echo "🥳 Pulling new image"
