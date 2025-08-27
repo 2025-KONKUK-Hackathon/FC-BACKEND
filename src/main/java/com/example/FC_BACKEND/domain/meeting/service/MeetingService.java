@@ -235,4 +235,5 @@ public class MeetingService {
         return meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(MEETING_NOT_FOUND));
     }
 
+    //TODO: 내가 만든 모임 조회 기능
 }
