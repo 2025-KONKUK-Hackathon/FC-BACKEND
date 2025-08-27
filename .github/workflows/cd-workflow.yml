@@ -59,21 +59,13 @@ jobs:
           script: |
             echo "🗂️ Change Directory to EC2 Root"
             cd /home/ec2-user
-            
+            ENV_FILE='/etc/fc-backend/.env'
             echo "✋🏻Stopping existing container and Deploy new container"
             chmod +x ./deploy.sh
             ./deploy.sh
-            ENV_FILE='/etc/fc-backend/.env'
+            
 
-            echo "🥳 Pulling new image"
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
-
-            echo "🌱 Running new container"
-             sudo docker run -d \
-              -p 8080:8080 \
-              --name ${{ secrets.CONTAINER_NAME }} \
-              --env-file "$ENV_FILE" \
-              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+            
 
 
             echo "🚮 Cleaning up old images"
