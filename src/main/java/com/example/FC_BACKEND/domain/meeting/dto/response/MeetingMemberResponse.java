@@ -15,7 +15,7 @@ public record MeetingMemberResponse(
         String phone,
 
         @Schema(description = "모임 멤버 학번")
-        String studentNunmber,
+        String studentNumber,
 
         @Schema(description = "신청 시각")
         LocalDateTime registerAt
