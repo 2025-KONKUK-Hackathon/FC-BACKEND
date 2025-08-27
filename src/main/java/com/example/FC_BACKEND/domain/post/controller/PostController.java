@@ -9,7 +9,6 @@ import com.example.FC_BACKEND.domain.post.dto.response.PostSummaryResponse;
 import com.example.FC_BACKEND.domain.post.service.PostService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
-import com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription;
 import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,7 @@ public class PostController {
     @PostMapping()
     public BaseResponse<Long> createPost(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody PostCreateRequest req){
         return BaseResponse.create(postService.createPost(userId, req.title(), req.content(), req.imageUrls(), req.part(),
-                req.grade(), req.Topic(), req.affiliation()),"게시글 작성이 완료되었습니다.");
+                req.grade(), req.topic(), req.affiliation()),"게시글 작성이 완료되었습니다.");
     }
 
     @Tag(name = "게시글 관련 API")

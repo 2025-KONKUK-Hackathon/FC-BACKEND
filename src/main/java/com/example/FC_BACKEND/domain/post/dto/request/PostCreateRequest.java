@@ -22,7 +22,7 @@ public record PostCreateRequest(
         String grade,
 
         @Schema(description = "주제", example = "CLASS")
-        String Topic,
+        String topic,
 
         @Schema(description = "소속", example = "COMPUTER")
         String affiliation
