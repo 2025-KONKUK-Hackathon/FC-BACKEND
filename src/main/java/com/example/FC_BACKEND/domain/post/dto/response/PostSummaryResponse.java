@@ -28,14 +28,21 @@ public record PostSummaryResponse(
         String imageUrl,
 
         @Schema(description = "작성 시간")
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+
+        @Schema(description = "학년", example = "FOURTH")
+        String grade,
+
+        @Schema(description = "소속", example = "COMPUTER")
+        String affiliation,
+
+        @Schema(description = "파트", example = "SERVER")
+        String part,
+
+        @Schema(description = "주제", example = "CLASS")
+        String topic
 ) implements CursorProvider<Long>
 {
-
-
-    public static PostSummaryResponse of(Long postId, Long writerId, String writerName, String title, String content, int commentCount, String imageUrl, LocalDateTime createdAt) {
-        return new PostSummaryResponse(postId, writerId, writerName, title, content, commentCount, imageUrl, createdAt);
-    }
 
     @Override
     public Long getCursor() {

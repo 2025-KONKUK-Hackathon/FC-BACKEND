@@ -54,7 +54,11 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.content,
                         comment.id.count().intValue(),
                         thumbnailUrlSubquery,
-                        post.createdAt
+                        post.createdAt,
+                        post.grade.stringValue(),
+                        post.affiliation.stringValue(),
+                        post.part.stringValue(),
+                        post.topic.stringValue()
                 ))
                 .from(post)
                 .leftJoin(comment).on(comment.post.eq(post))
