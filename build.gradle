@@ -68,6 +68,9 @@ dependencies {
 	implementation 'software.amazon.awssdk:auth:2.25.66'
 	implementation 'software.amazon.awssdk:regions:2.25.66'
 
+	//Actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 tasks.named('test') {
