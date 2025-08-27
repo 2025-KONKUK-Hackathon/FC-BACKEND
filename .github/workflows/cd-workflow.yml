@@ -57,6 +57,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
+            echo "🗂️ Change Directory to EC2 Root"
+            cd /home/ec2-user
+            
             echo "✋🏻Stopping existing container and Deploy new container"
             chmod +x ./deploy.sh
             ./deploy.sh
