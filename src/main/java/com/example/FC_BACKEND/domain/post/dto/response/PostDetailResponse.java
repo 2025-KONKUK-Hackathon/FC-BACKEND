@@ -28,7 +28,19 @@ public record PostDetailResponse(
         int commentCount,
 
         @Schema(description = "이미지 URL")
-        List<String> imageUrls
+        List<String> imageUrls,
+
+        @Schema(description = "학년", example = "FOURTH")
+        String grade,
+
+        @Schema(description = "소속", example = "COMPUTER")
+        String affiliation,
+
+        @Schema(description = "파트", example = "SERVER")
+        String part,
+
+        @Schema(description = "주제", example = "CLASS")
+        String topic
 
 ) {
 }

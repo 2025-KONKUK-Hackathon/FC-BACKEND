@@ -118,6 +118,10 @@ public class PostService {
                 .createdAt(post.getCreatedAt())
                 .commentCount(comments.size())
                 .imageUrls(imageUrls)
+                .grade(post.getGrade().toString())
+                .affiliation(post.getAffiliation().toString())
+                .part(post.getPart().toString())
+                .topic(post.getTopic().toString())
                 .build();
 
     }
