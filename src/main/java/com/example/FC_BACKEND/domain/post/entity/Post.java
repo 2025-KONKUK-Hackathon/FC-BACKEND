@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
@@ -52,6 +53,9 @@ public class Post {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Builder.Default
+    private boolean isAnnouncement = false;
 
     public static Post create(User user, String title, String content, Part part,  Grade grade, Topic topic, Affiliation affiliation){
         return Post.builder()
