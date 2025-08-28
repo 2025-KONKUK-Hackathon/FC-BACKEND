@@ -118,7 +118,7 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                 .from(mm)
                 .join(mm.user, user)
                 .where(
-                        mm.meeting.eq(meeting),
+                        mm.meeting.id.eq(meetingId),
                         mm.isHost.isTrue()
                 )
                 .fetchOne();
