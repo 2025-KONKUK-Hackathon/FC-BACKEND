@@ -91,10 +91,12 @@ public class MeetingService {
 
         if(now.isAfter(recruitStartDate) && now.isBefore(recruitEndDate) ){
             meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
+            return;
         }
 
         if(now.isBefore(recruitStartDate)){
             meeting.setMeetingStatus(MeetingStatus.NOT_STARTED);
+            return;
         }
 
         meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
