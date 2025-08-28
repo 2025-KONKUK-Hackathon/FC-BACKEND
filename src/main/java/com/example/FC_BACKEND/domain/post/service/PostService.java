@@ -60,7 +60,7 @@ public class PostService {
     public Long createPost(Long userId, String title, String content, List<String> imageUrls,
                            String part, String grade, String topic, String affiliation){
 
-        final String ADMIN_ID = "admin";
+        final String ADMIN_ID = "admin@konkuk.ac.kr";
 
         User user = userService.findUser(userId);
 
