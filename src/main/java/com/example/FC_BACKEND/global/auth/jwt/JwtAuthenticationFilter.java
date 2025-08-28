@@ -4,6 +4,7 @@ import com.example.FC_BACKEND.global.auth.jwt.constants.HttpHeaderConstants;
 import com.example.FC_BACKEND.global.auth.jwt.constants.SwaggerPathConstants;
 import com.example.FC_BACKEND.global.exception.customexception.CustomException;
 import com.example.FC_BACKEND.global.response.BaseErrorResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(errorCode.getHttpStatus());
                 response.setContentType("application/json;charset=UTF-8");
 
-                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                ObjectMapper om = new ObjectMapper();
                 response.getWriter().write(om.writeValueAsString(body));
                 return;
             }
