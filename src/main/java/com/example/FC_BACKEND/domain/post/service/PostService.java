@@ -59,10 +59,18 @@ public class PostService {
     public Long createPost(Long userId, String title, String content, List<String> imageUrls,
                            String part, String grade, String topic, String affiliation){
 
+        final String ADMIN_ID = "admin";
+
         User user = userService.findUser(userId);
 
-        Post post = postRepository.save(Post.create(user, title, content, Part.valueOf(part),
-                Grade.valueOf(grade), Topic.valueOf(topic), Affiliation.valueOf(affiliation)));
+        Post post = Post.create(user, title, content, Part.valueOf(part),
+                Grade.valueOf(grade), Topic.valueOf(topic), Affiliation.valueOf(affiliation));
+
+        if(user.getEmail().equals(ADMIN_ID)){
+            post.setAnnouncement(true);
+        }
+
+        postRepository.save(post);
 
         List<String> urls = imageUrls != null ? imageUrls : List.of();
         if (!urls.isEmpty()) {
@@ -73,6 +81,9 @@ public class PostService {
             }
             postImageRepository.saveAll(images);
         }
+
+
+
 
         return post.getId();
     }
@@ -127,6 +138,7 @@ public class PostService {
                 .affiliation(post.getAffiliation().toString())
                 .part(post.getPart().toString())
                 .topic(post.getTopic().toString())
+                .isAnnouncement(post.isAnnouncement())
                 .build();
 
     }

@@ -48,7 +48,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.grade.stringValue(),
                         post.affiliation.stringValue(),
                         post.part.stringValue(),
-                        post.topic.stringValue()
+                        post.topic.stringValue(),
+                        post.isAnnouncement
                 ))
                 .from(post)
                 .leftJoin(comment).on(comment.post.eq(post))
@@ -91,7 +92,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.grade.stringValue(),
                         post.affiliation.stringValue(),
                         post.part.stringValue(),
-                        post.topic.stringValue()
+                        post.topic.stringValue(),
+                        post.isAnnouncement
                 ))
                 .from(post)
                 .leftJoin(comment).on(comment.post.eq(post))
