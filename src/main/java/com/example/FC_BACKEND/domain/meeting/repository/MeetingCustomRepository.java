@@ -11,4 +11,6 @@ public interface MeetingCustomRepository {
     public User findHostById(Long meetingId);
 
     public int getCurrentRecruitCount(Long meetingId);
+
+    public Slice<MeetingSummaryResponse> findAllByUserIdAndCursorId(Long userId, Long cursorId, int size);
 }

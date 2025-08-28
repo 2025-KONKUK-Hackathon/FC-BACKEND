@@ -15,6 +15,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -39,35 +40,11 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
         QMeetingImage mi = QMeetingImage.meetingImage;
         QMeetingImage mi2 = new QMeetingImage("mi2");
 
-        Expression<Integer> currentRecruitCount =
-                ExpressionUtils.as(
-                        JPAExpressions.select(mm.id.count().intValue())
-                                .from(mm)
-                                .where(mm.meeting.eq(meeting)),
-                        "currentRecruitCount"
-                );
+        Expression<Integer> currentRecruitCount = getRecruitCount(mm, meeting);
 
-        var hostNameSubquery = JPAExpressions
-                .select(user.name)
-                .from(mmHost)
-                .join(mmHost.user, user)
-                .where(
-                        mmHost.meeting.eq(meeting),
-                        mmHost.isHost.isTrue()
-                );
+        var hostNameSubquery = getHostNameSubquery(user, mmHost, meeting);
 
-        var thumbnailUrlSubquery = JPAExpressions
-                .select(mi.url)
-                .from(mi)
-                .where(
-                        mi.meeting.eq(meeting),
-                        mi.id.eq(
-                                JPAExpressions
-                                        .select(mi2.id.min())
-                                        .from(mi2)
-                                        .where(mi2.meeting.eq(meeting))
-                        )
-                );
+        var thumbnailUrlSubquery = getThumbnailUrlSubquery(mi, meeting, mi2);
 
         List<MeetingSummaryResponse> content = queryFactory
                 .select(Projections.constructor(MeetingSummaryResponse.class,
@@ -89,6 +66,43 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
         if (hasNext) content.remove(size);
 
         return new SliceImpl<>(content, PageRequest.of(0, size), hasNext);
+    }
+
+    private Expression<Integer> getRecruitCount(QMeetingMember mm, QMeeting meeting) {
+        Expression<Integer> currentRecruitCount =
+                ExpressionUtils.as(
+                        JPAExpressions.select(mm.id.count().intValue())
+                                .from(mm)
+                                .where(mm.meeting.eq(meeting)),
+                        "currentRecruitCount"
+                );
+        return currentRecruitCount;
+    }
+
+    private JPQLQuery<String> getThumbnailUrlSubquery(QMeetingImage mi, QMeeting meeting, QMeetingImage mi2) {
+        return JPAExpressions
+                .select(mi.url)
+                .from(mi)
+                .where(
+                        mi.meeting.eq(meeting),
+                        mi.id.eq(
+                                JPAExpressions
+                                        .select(mi2.id.min())
+                                        .from(mi2)
+                                        .where(mi2.meeting.eq(meeting))
+                        )
+                );
+    }
+
+    private JPQLQuery<String> getHostNameSubquery(QUser user, QMeetingMember mmHost, QMeeting meeting) {
+        return JPAExpressions
+                .select(user.name)
+                .from(mmHost)
+                .join(mmHost.user, user)
+                .where(
+                        mmHost.meeting.eq(meeting),
+                        mmHost.isHost.isTrue()
+                );
     }
 
     @Override
@@ -120,5 +134,49 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                 .fetchOne();
 
         return currentRecruitCount != null ? currentRecruitCount : 0;
+    }
+
+    @Override
+    public Slice<MeetingSummaryResponse> findAllByUserIdAndCursorId(Long userId, Long cursorId, int size) {
+
+        QMeeting meeting = QMeeting.meeting;
+        QMeetingMember mm = QMeetingMember.meetingMember;
+        QMeetingMember mmHost = new QMeetingMember("mmHost");
+        QUser user = QUser.user;
+        QMeetingImage mi = QMeetingImage.meetingImage;
+        QMeetingImage mi2 = new QMeetingImage("mi2");
+
+        Expression<Integer> currentRecruitCount = getRecruitCount(mm, meeting);
+
+        var hostNameSubquery = getHostNameSubquery(user, mmHost, meeting);
+
+        var thumbnailUrlSubquery = getThumbnailUrlSubquery(mi, meeting, mi2);
+
+        List<MeetingSummaryResponse> content = queryFactory
+                .select(Projections.constructor(MeetingSummaryResponse.class,
+                        meeting.id,
+                        hostNameSubquery,
+                        meeting.name,
+                        meeting.recruitNumber,
+                        currentRecruitCount,
+                        meeting.category.stringValue(),
+                        thumbnailUrlSubquery
+                ))
+                .from(mm)
+                .join(mm.meeting, meeting)
+                .join(mm.user, user)
+                .where(
+                        cursorId != null ? meeting.id.lt(cursorId) : null,
+                        mm.user.id.eq(userId),
+                        mm.isHost.isTrue()
+                )
+                .orderBy(meeting.id.desc())
+                .limit(size + 1)
+                .fetch();
+
+        boolean hasNext = content.size() > size;
+        if (hasNext) content.remove(size);
+
+        return new SliceImpl<>(content, PageRequest.of(0, size), hasNext);
     }
 }

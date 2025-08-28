@@ -236,4 +236,14 @@ public class MeetingService {
     }
 
     //TODO: 내가 만든 모임 조회 기능
+
+    public SliceResponse<MeetingSummaryResponse, Long> findMeetingByUserId(Long userId, Long cursorId, int size){
+
+        Slice<MeetingSummaryResponse> meetings = meetingCustomRepository.findAllByUserIdAndCursorId(userId, cursorId, size);
+
+        return SliceResponse.from(meetings);
+
+    }
+
+
 }
