@@ -96,7 +96,7 @@ public class PostController {
     @Tag(name = "게시글 관련 API")
     @Operation(summary = "게시글 스크랩")
     @CustomExceptionDescription(POST_SCRAP)
-    @PostMapping("scrap")
+    @PostMapping("scraps")
     public BaseResponse<Void> scrapPost(
             @LoginUserId @Parameter(hidden = true) Long userId,
             @RequestParam Long postId
@@ -105,6 +105,17 @@ public class PostController {
         return BaseResponse.ok("게시물 스크랩에 성공하였습니다.");
     }
 
-    
+    @Tag(name = "마이페이지 관련 API")
+    @Operation(summary = "내가 스크랩한 게시글 조회")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping("scraps")
+    public BaseResponse<SliceResponse<PostSummaryResponse, Long>> getAllScaps(
+            @LoginUserId @Parameter(hidden = true) Long userId,
+            @RequestParam(required = false, name = "cursor") Long cursorId,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return BaseResponse.ok(postService.getScrapPost(userId,  cursorId, size),"스크랩한 게시물 조회에 성공하였습니다.");
+    }
+
 
 }
