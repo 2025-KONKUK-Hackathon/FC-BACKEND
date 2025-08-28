@@ -51,6 +51,7 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                         meeting.id,
                         hostNameSubquery,
                         meeting.name,
+                        meeting.content,
                         meeting.recruitNumber,
                         currentRecruitCount,
                         meeting.category.stringValue(),

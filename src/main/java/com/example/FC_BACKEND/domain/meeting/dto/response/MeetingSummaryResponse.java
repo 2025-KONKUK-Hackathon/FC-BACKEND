@@ -13,6 +13,9 @@ public record MeetingSummaryResponse(
         @Schema(description = "모임 이름", example = "개파갈사람")
         String meetingName,
 
+        @Schema(description = "모임 설명")
+        String content,
+
         @Schema(description = "모집 인원", example = "5")
         int recruitNumber,
 
