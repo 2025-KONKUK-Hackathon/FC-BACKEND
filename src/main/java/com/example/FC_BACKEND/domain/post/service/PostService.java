@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static com.example.FC_BACKEND.global.exception.constant.PostErrorCode.*;
@@ -63,8 +64,15 @@ public class PostService {
 
         User user = userService.findUser(userId);
 
-        Post post = Post.create(user, title, content, Part.valueOf(part),
-                Grade.valueOf(grade), Topic.valueOf(topic), Affiliation.valueOf(affiliation));
+        Post post = Post.create(
+                user,
+                title,
+                content,
+                toEnumOrNull(part, Part.class),
+                toEnumOrNull(grade, Grade.class),
+                toEnumOrNull(topic, Topic.class),
+                toEnumOrNull(affiliation, Affiliation.class)
+        );
 
         if(user.getEmail().equals(ADMIN_ID)){
             post.setAnnouncement(true);
@@ -86,6 +94,17 @@ public class PostService {
 
 
         return post.getId();
+    }
+
+    private <E extends Enum<E>> E toEnumOrNull(String value, Class<E> enumClass) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return Enum.valueOf(enumClass, value.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Transactional
