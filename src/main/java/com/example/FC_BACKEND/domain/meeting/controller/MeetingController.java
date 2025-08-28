@@ -14,6 +14,7 @@ import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class MeetingController {
     @Operation(summary = "모임 생성")
     @CustomExceptionDescription(MEETING_CREATE)
     @PostMapping()
-    public BaseResponse<Long> createMeeting(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody MeetingCreateRequest req){
+    public BaseResponse<Long> createMeeting(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody @Valid MeetingCreateRequest req){
         return BaseResponse.create(meetingService.createMeeting(userId, req.meetingName(), req.content(), req.category(),
                 req.recruitNumber(), req.recruitStartDate(), req.recruitEndDate(), req.actualStartDate(), req.actualEndDate(), req.imageUrls()),
                 "모임 생성에 성공하였습니다.");

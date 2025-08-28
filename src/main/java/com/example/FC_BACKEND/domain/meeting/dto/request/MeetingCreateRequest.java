@@ -1,5 +1,6 @@
 package com.example.FC_BACKEND.domain.meeting.dto.request;
 
+import com.example.FC_BACKEND.global.annotation.ValidCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public record MeetingCreateRequest(
         @Schema(description = "모임 설명", example = "개강파티 가고 싶은데 전과생인데 아는 사람이 없어서 같이 가실 분 구해요 ")
         String content,
 
+        @ValidCategory
         @Schema(description = "모임 카테고리", example = "FRIENDSHIP")
         String category,
 
