@@ -13,6 +13,9 @@ public class AffiliationValidator implements ConstraintValidator<ValidAffiliatio
 
     @Override
     public boolean isValid(String affiliation, ConstraintValidatorContext constraintValidatorContext) {
+        if(affiliation == null || affiliation.isBlank()){
+            return true;
+        }
         return ALLOWED_AFFILIATION.contains(affiliation);
     }
 }

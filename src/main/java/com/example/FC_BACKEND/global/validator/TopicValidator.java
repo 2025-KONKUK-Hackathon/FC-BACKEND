@@ -12,6 +12,9 @@ public class TopicValidator implements ConstraintValidator<ValidTopic, String> {
 
     @Override
     public boolean isValid(String topic, ConstraintValidatorContext constraintValidatorContext) {
+        if(topic == null || topic.isBlank()){
+            return true;
+        }
         return ALLOWED_TOPIC.contains(topic);
     }
 }

@@ -12,6 +12,9 @@ public class GradeValidator implements ConstraintValidator<ValidGrade, String> {
 
     @Override
     public boolean isValid(String grade, ConstraintValidatorContext constraintValidatorContext) {
+        if(grade == null || grade.isBlank()){
+            return true;
+        }
         return ALLOWED_GRADE.contains(grade);
     }
 }

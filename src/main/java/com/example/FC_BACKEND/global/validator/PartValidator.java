@@ -11,6 +11,9 @@ public class PartValidator implements ConstraintValidator<ValidPart, String> {
 
     @Override
     public boolean isValid(String part, ConstraintValidatorContext constraintValidatorContext) {
+        if(part == null || part.isBlank()){
+            return true;
+        }
         return ALLOWED_PART.contains(part);
     }
 }

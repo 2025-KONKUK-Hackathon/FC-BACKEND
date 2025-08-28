@@ -13,6 +13,9 @@ public class MeetingCategoryValidator implements ConstraintValidator<ValidCatego
 
     @Override
     public boolean isValid(String category, ConstraintValidatorContext constraintValidatorContext) {
+        if(category == null || category.isBlank()){
+            return true;
+        }
         return ALLOWED_CATEGORY.contains(category);
     }
 }
