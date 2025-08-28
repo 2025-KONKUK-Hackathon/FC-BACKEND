@@ -14,7 +14,6 @@ public enum Topic {
     PROJECT("PROJECT"),
     STUDY("STUDY"),
     INTERNSHIP("INTERNSHIP"),
-    ANNOUNCEMENT("ANNOUNCEMENT"),
     ETC("ETC");
 
     private final String description;

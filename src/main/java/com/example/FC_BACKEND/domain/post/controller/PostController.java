@@ -14,7 +14,9 @@ import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription.*;
@@ -32,7 +34,7 @@ public class PostController {
     @Operation(summary = "게시글 작성")
     @CustomExceptionDescription(POST_CREATE)
     @PostMapping()
-    public BaseResponse<Long> createPost(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody PostCreateRequest req){
+    public BaseResponse<Long> createPost(@LoginUserId @Parameter(hidden = true) Long userId, @RequestBody @Valid PostCreateRequest req){
         return BaseResponse.create(postService.createPost(userId, req.title(), req.content(), req.imageUrls(), req.part(),
                 req.grade(), req.topic(), req.affiliation()),"게시글 작성이 완료되었습니다.");
     }
