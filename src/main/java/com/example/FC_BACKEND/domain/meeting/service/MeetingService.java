@@ -96,6 +96,8 @@ public class MeetingService {
         if(now.isBefore(recruitStartDate)){
             meeting.setMeetingStatus(MeetingStatus.NOT_STARTED);
         }
+
+        meeting.setMeetingStatus(MeetingStatus.IN_PROGRESS);
     }
 
     @Transactional
