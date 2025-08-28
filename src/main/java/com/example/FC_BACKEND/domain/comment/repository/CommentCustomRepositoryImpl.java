@@ -35,10 +35,11 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
                 .from(comment)
                 .leftJoin(user).on(user.eq(comment.user))
                 .where(
-                        comment.post.id.eq(postId)
+                        comment.post.id.eq(postId),
+                        cursorId != null ? comment.id.lt(cursorId) : null
                 )
                 .groupBy(comment.id)
-                .orderBy(comment.id.asc())
+                .orderBy(comment.id.desc())
                 .limit(size + 1)
                 .fetch();
 
