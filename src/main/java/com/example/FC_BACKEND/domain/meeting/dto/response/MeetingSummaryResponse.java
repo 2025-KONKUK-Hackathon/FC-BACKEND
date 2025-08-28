@@ -23,7 +23,10 @@ public record MeetingSummaryResponse(
         String category,
 
         @Schema(description = "썸네일 이미지 url")
-        String imageUrl
+        String imageUrl,
+
+        @Schema(description = "모집 상태")
+        String recruitStatus
 ) implements CursorProvider<Long> {
     @Override
     public Long getCursor() {

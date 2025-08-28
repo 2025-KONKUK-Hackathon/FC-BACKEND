@@ -54,7 +54,8 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                         meeting.recruitNumber,
                         currentRecruitCount,
                         meeting.category.stringValue(),
-                        thumbnailUrlSubquery
+                        thumbnailUrlSubquery,
+                        meeting.meetingStatus.stringValue()
                 ))
                 .from(meeting)
                 .where(cursorId != null ? meeting.id.lt(cursorId) : null)
@@ -160,7 +161,8 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                         meeting.recruitNumber,
                         currentRecruitCount,
                         meeting.category.stringValue(),
-                        thumbnailUrlSubquery
+                        thumbnailUrlSubquery,
+                        meeting.meetingStatus.stringValue()
                 ))
                 .from(mm)
                 .join(mm.meeting, meeting)
