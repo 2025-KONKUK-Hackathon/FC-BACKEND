@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class GradeValidator implements ConstraintValidator<ValidGrade, String> {
 
-    private static final Set<String> ALLOWED_GRADE = Set.of("FIRST", "SECOND", "THIRD", "UNDECLARED", "TRANSFER");
+    private static final Set<String> ALLOWED_GRADE = Set.of("FIRST", "SECOND", "THIRD", "FOURTH");
 
     @Override
     public boolean isValid(String grade, ConstraintValidatorContext constraintValidatorContext) {
