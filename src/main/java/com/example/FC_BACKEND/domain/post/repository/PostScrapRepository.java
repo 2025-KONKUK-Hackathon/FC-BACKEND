@@ -10,4 +10,6 @@ public interface PostScrapRepository extends JpaRepository<PostScrap, Long> {
 
     Optional<PostScrap> findByUserIdAndPostId(Long userId, Long postId);
 
+
+
 }

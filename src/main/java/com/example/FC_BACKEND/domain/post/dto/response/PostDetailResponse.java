@@ -43,7 +43,10 @@ public record PostDetailResponse(
         String topic,
 
         @Schema(description = "공지 여부")
-        boolean isAnnouncement
+        boolean isAnnouncement,
+
+        @Schema(description = "스크랩 여부")
+        boolean isScrapped
 
 ) {
 }

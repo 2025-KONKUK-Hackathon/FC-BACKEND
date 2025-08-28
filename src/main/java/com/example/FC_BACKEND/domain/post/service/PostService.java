@@ -117,7 +117,7 @@ public class PostService {
         return SliceResponse.from(postList);
     }
 
-    public PostDetailResponse getPostsById(Long postId){
+    public PostDetailResponse getPostsById(Long userId, Long postId){
         Post post = findPostById(postId);
 
         User user = post.getUser();
@@ -125,6 +125,9 @@ public class PostService {
         List<Comment> comments = commentRepository.findByPostId(postId);
 
         List<String> imageUrls = postImageRepository.findAllUrlByPostId(postId);
+
+        Optional<PostScrap> postScrap = postScrapRepository.findByUserIdAndPostId(userId, postId);
+        boolean isScrap = postScrap.isPresent();
 
         return PostDetailResponse.builder()
                 .writerId(user.getId())
@@ -139,6 +142,7 @@ public class PostService {
                 .part(post.getPart().toString())
                 .topic(post.getTopic().toString())
                 .isAnnouncement(post.isAnnouncement())
+                .isScrapped(isScrap)
                 .build();
 
     }

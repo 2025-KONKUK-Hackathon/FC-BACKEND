@@ -79,8 +79,10 @@ public class PostController {
     @Operation(summary = "게시글 상세 조회")
     @CustomExceptionDescription(POST_DETAIL)
     @GetMapping("{postId}")
-    public BaseResponse<PostDetailResponse> getPostDetail(@PathVariable Long postId){
-        return BaseResponse.ok(postService.getPostsById(postId),"게시물 상세조회에 성공하였습니다.");
+    public BaseResponse<PostDetailResponse> getPostDetail(
+            @LoginUserId @Parameter(hidden = true) Long userId,
+            @PathVariable Long postId){
+        return BaseResponse.ok(postService.getPostsById(userId, postId),"게시물 상세조회에 성공하였습니다.");
     }
 
     @Tag(name = "게시글 관련 API")
