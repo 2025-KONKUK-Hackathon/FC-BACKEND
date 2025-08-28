@@ -95,12 +95,10 @@ public class UserService {
         return userRespository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
-    //TODO: 유저 정보 조회
-
     public UserProfileResponse getUserProfile(Long userId){
         User user = findUser(userId);
 
-        return UserProfileResponse.of(user.getName(), user.getPhone());
+        return UserProfileResponse.of(user.getName(), user.getPhone(), user.getStudentNumber());
     }
 
 }

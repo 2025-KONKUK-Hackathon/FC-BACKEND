@@ -7,9 +7,12 @@ public record UserProfileResponse(
         String name,
 
         @Schema(description = "전화번호", example = "01021246390")
-        String phone
+        String phone,
+
+        @Schema(description = "학번", example = "202011346")
+        String studentNumber
 ) {
-    public static UserProfileResponse of(String name, String phone){
-        return new UserProfileResponse(name, phone);
+    public static UserProfileResponse of(String name, String phone, String studentNumber) {
+        return new UserProfileResponse(name, phone, studentNumber);
     }
 }
