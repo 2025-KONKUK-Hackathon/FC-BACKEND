@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum Affiliation {
     COMPUTER("COMPUTER"),
     SMART_ICT("SMART_ICT"),
-    DOUBLE_MAJOR("DOUBLE_MAJOR"),
+    DOUBLE_MINOR("DOUBLE_MINOR"),
     UNDECLARED("UNDECLARED"),
     TRANSFER("TRANSFER");
 

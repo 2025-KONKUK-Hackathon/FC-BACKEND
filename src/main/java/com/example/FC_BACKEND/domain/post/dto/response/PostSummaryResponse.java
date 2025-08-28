@@ -40,7 +40,10 @@ public record PostSummaryResponse(
         String part,
 
         @Schema(description = "주제", example = "CLASS")
-        String topic
+        String topic,
+
+        @Schema(description = "공지 여부")
+        boolean isAnnouncement
 ) implements CursorProvider<Long>
 {
 
