@@ -92,4 +92,5 @@ public class MeetingController {
     public BaseResponse<List<MeetingRecruitStatusResponse>> getRecruitStatus(@PathVariable Long meetingId){
         return BaseResponse.ok(meetingService.getRecruitStatus(meetingId),"모집 현황 조회에 성공하였습니다.");
     }
+
 }

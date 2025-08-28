@@ -1,5 +1,7 @@
 package com.example.FC_BACKEND.domain.user.controller;
 
+import com.example.FC_BACKEND.domain.meeting.dto.response.MeetingSummaryResponse;
+import com.example.FC_BACKEND.domain.meeting.service.MeetingService;
 import com.example.FC_BACKEND.domain.user.dto.request.EmailRequest;
 import com.example.FC_BACKEND.domain.user.dto.request.UserSignUpRequest;
 import com.example.FC_BACKEND.domain.user.dto.response.UserProfileResponse;
@@ -7,6 +9,7 @@ import com.example.FC_BACKEND.domain.user.service.UserService;
 import com.example.FC_BACKEND.global.annotation.CustomExceptionDescription;
 import com.example.FC_BACKEND.global.annotation.LoginUserId;
 import com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescription;
+import com.example.FC_BACKEND.global.dto.SliceResponse;
 import com.example.FC_BACKEND.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +25,8 @@ import static com.example.FC_BACKEND.global.config.swagger.SwaggerResponseDescri
 public class UserController {
 
     private final UserService userService;
+
+    private final MeetingService meetingService;
 
     @Tag(name = "회원가입 관련 API")
     @Operation(summary = "이메일 인증번호 전송")
@@ -60,4 +65,14 @@ public class UserController {
         return BaseResponse.ok(userService.getUserProfile(userId),"유저 프로필 조회에 성공하였습니다.");
     }
 
+    @Tag(name = "마이페이지 관련 API")
+    @Operation(summary = "내가 만든 모임 조회")
+    @CustomExceptionDescription(COMMON)
+    @GetMapping("meetings")
+    public BaseResponse<SliceResponse<MeetingSummaryResponse, Long>> getMeetingsByUserId(
+            @LoginUserId @Parameter(hidden = true) Long userId,
+            @RequestParam(required = false) Long cursorId, @RequestParam(required = false, defaultValue = "10") int size
+    ){
+        return BaseResponse.ok(meetingService.findMeetingByUserId(userId,cursorId,size),"내가 만든 모임 조회에 성공하였습니다.");
+    }
 }
