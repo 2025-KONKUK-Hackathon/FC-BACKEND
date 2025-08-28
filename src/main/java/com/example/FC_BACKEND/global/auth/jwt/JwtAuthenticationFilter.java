@@ -3,6 +3,7 @@ package com.example.FC_BACKEND.global.auth.jwt;
 import com.example.FC_BACKEND.global.auth.jwt.constants.HttpHeaderConstants;
 import com.example.FC_BACKEND.global.auth.jwt.constants.SwaggerPathConstants;
 import com.example.FC_BACKEND.global.exception.customexception.CustomException;
+import com.example.FC_BACKEND.global.response.BaseErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,17 +35,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
 
-        if(token!=null) {
+        if (token != null) {
             try {
                 if (jwtUtil.isTokenValid(token)) {
                     Authentication authentication = getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (CustomException e) {
-                request.setAttribute("exception", e.getErrorCode());
-                throw e;
+
+                var errorCode = e.getErrorCode();
+                BaseErrorResponse body = BaseErrorResponse.of(errorCode);
+
+                response.setStatus(errorCode.getHttpStatus());
+                response.setContentType("application/json;charset=UTF-8");
+
+                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                response.getWriter().write(om.writeValueAsString(body));
+                return;
             }
         }
+
 
         filterChain.doFilter(request, response);
     }
