@@ -130,14 +130,14 @@ public class MeetingService {
         List<String> imageUrls = meetingImageRepository.findAllByMeetingId(meetingId);
 
         MeetingMember meetingMember = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
-                .orElseThrow(() -> new CustomException(MEETING_MEMBER_NOT_FOUND));
+                .orElse(null);
 
-
+        boolean isHost = meetingMember != null && meetingMember.isHost();
 
         return MeetingDetailResponse.builder()
                 .meetingName(meeting.getName())
                 .hostName(host.getName())
-                .isHost(meetingMember.isHost())
+                .isHost(isHost)
                 .meetingStatus(String.valueOf(meeting.getMeetingStatus()))
                 .recruitNumber(meeting.getRecruitNumber())
                 .currentRecruitCount(currentRecruitCount)
