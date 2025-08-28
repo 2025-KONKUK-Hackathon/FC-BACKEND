@@ -7,4 +7,5 @@ public interface PostCustomRepository {
 
     public Slice<PostSummaryResponse> findAllByCursorId(Long cursorId, int size);
 
+    public Slice<PostSummaryResponse> findAllScrapByCursorId(Long userId, Long cursorId, int size);
 }

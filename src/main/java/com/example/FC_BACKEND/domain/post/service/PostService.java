@@ -139,8 +139,6 @@ public class PostService {
 
     }
 
-    //TODO: 게시물 스크랩 기능, 스크랩한 게시물 조회 기능
-
     @Transactional
     public void scrapPost(Long userId, Long postId){
         Post post = findPostById(postId);
@@ -153,6 +151,14 @@ public class PostService {
         }
 
         postScrapRepository.save(PostScrap.create(user, post));
+
+    }
+
+    public SliceResponse<PostSummaryResponse, Long> getScrapPost(Long userId, Long cursorId, int size){
+
+        Slice<PostSummaryResponse> scrapList = postCustomRepositoryImpl.findAllScrapByCursorId(userId, cursorId, size);
+
+        return SliceResponse.from(scrapList);
 
     }
 
